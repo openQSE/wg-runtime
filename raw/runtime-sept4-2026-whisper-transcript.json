@@ -1,0 +1,4577 @@
+[
+  {
+    "start": 0.0,
+    "end": 7.0,
+    "text": "or the particular work that I look at, that might be important."
+  },
+  {
+    "start": 7.0,
+    "end": 12.8,
+    "text": "So one of the key observations is that there is no standard device runtime and a task interface"
+  },
+  {
+    "start": 12.8,
+    "end": 17.0,
+    "text": "that is shared across quantum and HPC stacks."
+  },
+  {
+    "start": 17.0,
+    "end": 24.900000000000002,
+    "text": "If there exists, it will be really nice to formalize it within this group as well,"
+  },
+  {
+    "start": 24.9,
+    "end": 30.799999999999997,
+    "text": "And not just in the perspective of runtime for something like"
+  },
+  {
+    "start": 30.799999999999997,
+    "end": 35.5,
+    "text": "Slurm or Jot Dispatch, but runtime that targeted the device"
+  },
+  {
+    "start": 35.5,
+    "end": 36.6,
+    "text": "side to things."
+  },
+  {
+    "start": 36.6,
+    "end": 40.14,
+    "text": "And I'll give an example of what that means when we talk"
+  },
+  {
+    "start": 40.14,
+    "end": 43.18,
+    "text": "about classical, which is essentially this."
+  },
+  {
+    "start": 43.18,
+    "end": 46.9,
+    "text": "So if you're not familiar with Kudos for runtime"
+  },
+  {
+    "start": 46.9,
+    "end": 53.58,
+    "text": "or our Rockam hit runtime, some of the components are there"
+  },
+  {
+    "start": 53.58,
+    "end": 58.739999999999995,
+    "text": "is a very stream centric model to how we build applications"
+  },
+  {
+    "start": 58.739999999999995,
+    "end": 61.82,
+    "text": "and kernels on these GPUs."
+  },
+  {
+    "start": 61.82,
+    "end": 63.54,
+    "text": "And it's a really good example to look at,"
+  },
+  {
+    "start": 63.54,
+    "end": 67.02,
+    "text": "because when we talk about heterogeneous quantum systems,"
+  },
+  {
+    "start": 67.02,
+    "end": 69.02,
+    "text": "GPUs are a big part of it."
+  },
+  {
+    "start": 69.02,
+    "end": 72.22,
+    "text": "And there might be CPUs or FPGAs and other pieces of it,"
+  },
+  {
+    "start": 72.22,
+    "end": 74.22,
+    "text": "too, which we're internally exploring,"
+  },
+  {
+    "start": 74.22,
+    "end": 77.42,
+    "text": "because AMD has a portfolio that spans across a bunch"
+  },
+  {
+    "start": 77.42,
+    "end": 80.02,
+    "text": "of these products."
+  },
+  {
+    "start": 80.02,
+    "end": 84.22,
+    "text": "And the idea is that in CUDA runtime,"
+  },
+  {
+    "start": 84.22,
+    "end": 86.61999999999999,
+    "text": "which I won't go over the right side,"
+  },
+  {
+    "start": 86.61999999999999,
+    "end": 90.58,
+    "text": "which it basically mirrors whatever CUDA provides,"
+  },
+  {
+    "start": 90.58,
+    "end": 95.25999999999999,
+    "text": "but there are, you manually manage these contexts,"
+  },
+  {
+    "start": 96.17999999999999,
+    "end": 98.53999999999999,
+    "text": "which are sort of device context"
+  },
+  {
+    "start": 98.53999999999999,
+    "end": 99.58,
+    "text": "that gives you information"
+  },
+  {
+    "start": 99.58,
+    "end": 102.5,
+    "text": "of what the underlying hardware provides."
+  },
+  {
+    "start": 102.5,
+    "end": 105.53999999999999,
+    "text": "And these are resources, the physical resources"
+  },
+  {
+    "start": 105.53999999999999,
+    "end": 106.89999999999999,
+    "text": "that the hardware provides."
+  },
+  {
+    "start": 106.89999999999999,
+    "end": 109.53999999999999,
+    "text": "So it will be things like number of compute units available"
+  },
+  {
+    "start": 109.54,
+    "end": 113.82000000000001,
+    "text": "within the hardware number, the amount of scratchpad memory"
+  },
+  {
+    "start": 113.82000000000001,
+    "end": 116.38000000000001,
+    "text": "available, the amount of HPM memory available."
+  },
+  {
+    "start": 116.38000000000001,
+    "end": 118.62,
+    "text": "So all sorts of different information"
+  },
+  {
+    "start": 118.62,
+    "end": 123.18,
+    "text": "that lets you program for that specific system."
+  },
+  {
+    "start": 123.18,
+    "end": 126.46000000000001,
+    "text": "And the actual programming model is that you"
+  },
+  {
+    "start": 126.46000000000001,
+    "end": 129.06,
+    "text": "split between something called the shader code"
+  },
+  {
+    "start": 129.06,
+    "end": 133.06,
+    "text": "or often known as a kernel, which executes on the device"
+  },
+  {
+    "start": 133.06,
+    "end": 135.46,
+    "text": "itself, and then a host code that"
+  },
+  {
+    "start": 135.46,
+    "end": 139.06,
+    "text": "is responsible for launching that work on to the device."
+  },
+  {
+    "start": 139.06,
+    "end": 142.22,
+    "text": "and that host code typically resides in the CPU."
+  },
+  {
+    "start": 142.22,
+    "end": 145.66,
+    "text": "So CPU is responsible for launching the work onto the GPU"
+  },
+  {
+    "start": 145.66,
+    "end": 149.18,
+    "text": "and the GPU is responsible for consuming that work."
+  },
+  {
+    "start": 149.18,
+    "end": 152.2,
+    "text": "Although that's changing as we go more and more towards"
+  },
+  {
+    "start": 152.2,
+    "end": 157.2,
+    "text": "LLM, there have been entirely device-centric runtimes,"
+  },
+  {
+    "start": 158.9,
+    "end": 160.38,
+    "text": "which I'll talk about in a second,"
+  },
+  {
+    "start": 160.38,
+    "end": 164.22,
+    "text": "where the device itself launches the work on itself"
+  },
+  {
+    "start": 164.22,
+    "end": 167.42000000000002,
+    "text": "or on other devices, which is kind of cool to think about."
+  },
+  {
+    "start": 167.42,
+    "end": 174.14,
+    "text": "And all of that is done to reduce latency, which I'll also get to in a second, because"
+  },
+  {
+    "start": 174.14,
+    "end": 179.85999999999999,
+    "text": "latency is super important in inference workloads for LLMs as well."
+  },
+  {
+    "start": 179.85999999999999,
+    "end": 186.61999999999998,
+    "text": "So it's very nice, overlapping what latency requirements are for quantum and also where"
+  },
+  {
+    "start": 186.61999999999998,
+    "end": 193.82,
+    "text": "the industry is turning towards for AI, although not in the same way."
+  },
+  {
+    "start": 193.82,
+    "end": 199.44,
+    "text": "There are very strict requirements in quantum, whereas there's loose performance and power"
+  },
+  {
+    "start": 199.44,
+    "end": 202.14,
+    "text": "requirements on the AI side."
+  },
+  {
+    "start": 202.14,
+    "end": 206.1,
+    "text": "The main thing that I'd like to discuss is this API."
+  },
+  {
+    "start": 206.1,
+    "end": 207.78,
+    "text": "It kind of tells you a lot."
+  },
+  {
+    "start": 207.78,
+    "end": 215.14,
+    "text": "It's the notorious triple chevron API, and the triple chevron API within CUDA kernels"
+  },
+  {
+    "start": 215.14,
+    "end": 216.54,
+    "text": "is how you launch the kernel."
+  },
+  {
+    "start": 216.54,
+    "end": 221.6,
+    "text": "So this is essentially encompasses a lot of the pieces of runtime itself."
+  },
+  {
+    "start": 221.6,
+    "end": 224.64,
+    "text": "There are a few different parts of this."
+  },
+  {
+    "start": 224.64,
+    "end": 232.32,
+    "text": "There's something called Grid and Block, which are essentially like your logical work items"
+  },
+  {
+    "start": 232.32,
+    "end": 238.07999999999998,
+    "text": "that you're constructing that will be eventually launched onto the physical hardware."
+  },
+  {
+    "start": 238.07999999999998,
+    "end": 244.35999999999999,
+    "text": "And this has allowed CUDA to be actually very successful because after generation they have"
+  },
+  {
+    "start": 244.35999999999999,
+    "end": 247.32,
+    "text": "just added more compute resources onto the GPUs."
+  },
+  {
+    "start": 247.32,
+    "end": 252.23999999999998,
+    "text": "The GPUs have evolved quite a lot, but one way that they have involved is they support"
+  },
+  {
+    "start": 252.23999999999998,
+    "end": 255.16,
+    "text": "more and more and more and more computer throughput."
+  },
+  {
+    "start": 255.16,
+    "end": 261.71999999999997,
+    "text": "But the programming model was such that you always targeted these logical entities called"
+  },
+  {
+    "start": 261.71999999999997,
+    "end": 264.08,
+    "text": "grids and thread blocks."
+  },
+  {
+    "start": 264.08,
+    "end": 268.6,
+    "text": "And the hardware scheduler then decides how to place these logical software entities onto"
+  },
+  {
+    "start": 268.6,
+    "end": 271.88,
+    "text": "the physical compute units of the GPU."
+  },
+  {
+    "start": 271.88,
+    "end": 276.12,
+    "text": "So that allowed Kuda to scale really well because software was written for these logical"
+  },
+  {
+    "start": 276.12,
+    "end": 280.04,
+    "text": "entities, it was always separate from what happened on the hardware side. The hardware"
+  },
+  {
+    "start": 280.04,
+    "end": 284.76,
+    "text": "side got more and more, and as long as you had more of these logical stuff to schedule"
+  },
+  {
+    "start": 284.76,
+    "end": 290.04,
+    "text": "onto more of the physical compute units, you always were keeping the GPU busy and you were"
+  },
+  {
+    "start": 290.04,
+    "end": 296.2,
+    "text": "always keeping the resource busy, and your code just worked from generation to generation."
+  },
+  {
+    "start": 296.2,
+    "end": 299.32,
+    "text": "That's changing quite a lot, but that's a different story."
+  },
+  {
+    "start": 300.0,
+    "end": 305.0,
+    "text": "So the first piece is like your logical work items is how I call it."
+  },
+  {
+    "start": 305.0,
+    "end": 315.0,
+    "text": "The second piece is the amount of scratchpad memory you're giving to each of the individual logical work item block."
+  },
+  {
+    "start": 315.0,
+    "end": 320.0,
+    "text": "So this is limited by how much physical shared memory you have."
+  },
+  {
+    "start": 320.0,
+    "end": 323.0,
+    "text": "Scratchpad memory, LDS, they're all synonymous."
+  },
+  {
+    "start": 323.0,
+    "end": 329.0,
+    "text": "It's basically memory that is really close to the compute and typically used to store"
+  },
+  {
+    "start": 329.0,
+    "end": 338.78,
+    "text": "tiles of gems for reuse. So you'll store things that you will use more often in these"
+  },
+  {
+    "start": 338.78,
+    "end": 343.44,
+    "text": "kernels and these applications close to the core itself where they're going to be computed"
+  },
+  {
+    "start": 343.44,
+    "end": 349.88,
+    "text": "on. And this is a software controlled thing. That's why sometimes the programmer specifies"
+  },
+  {
+    "start": 349.88,
+    "end": 356.36,
+    "text": "here, sometimes not always, how much scratchpad memory is required for each one of my thread"
+  },
+  {
+    "start": 356.36,
+    "end": 359.06,
+    "text": "which is a logical work item."
+  },
+  {
+    "start": 359.06,
+    "end": 361.82,
+    "text": "And then the last bit, which is super important,"
+  },
+  {
+    "start": 361.82,
+    "end": 366.14,
+    "text": "this is the crux of essentially all of the runtime component,"
+  },
+  {
+    "start": 366.14,
+    "end": 368.26,
+    "text": "is called the stream."
+  },
+  {
+    "start": 368.26,
+    "end": 370.53999999999996,
+    "text": "And stream are these contexts."
+  },
+  {
+    "start": 370.53999999999996,
+    "end": 375.98,
+    "text": "That is how you establish concurrency within GPU runtimes."
+  },
+  {
+    "start": 375.98,
+    "end": 378.82,
+    "text": "So it's basically saying, I know that I"
+  },
+  {
+    "start": 378.82,
+    "end": 382.22,
+    "text": "can create a task graph of my application."
+  },
+  {
+    "start": 382.22,
+    "end": 384.86,
+    "text": "And let's say my task graph looks something like this."
+  },
+  {
+    "start": 384.86,
+    "end": 389.36,
+    "text": "I have a pre-processing step and that is represented as a node."
+  },
+  {
+    "start": 389.36,
+    "end": 394.88,
+    "text": "And that pre-processing step launches some work that is represented as like another node."
+  },
+  {
+    "start": 394.88,
+    "end": 400.6,
+    "text": "And then that work is going to create, not create, but is going to move on to an X set"
+  },
+  {
+    "start": 400.6,
+    "end": 401.72,
+    "text": "of work."
+  },
+  {
+    "start": 401.72,
+    "end": 405.72,
+    "text": "And that might move on to two independent sets of work."
+  },
+  {
+    "start": 405.72,
+    "end": 409.03999999999996,
+    "text": "And then I have to join them together to do some post-processing."
+  },
+  {
+    "start": 409.03999999999996,
+    "end": 412.0,
+    "text": "And then I have basically finished my application workload."
+  },
+  {
+    "start": 412.0,
+    "end": 419.0,
+    "text": "So this task graph that we are very naturally kind of used to envisioning in many of the"
+  },
+  {
+    "start": 419.0,
+    "end": 426.92,
+    "text": "scientific applications and HBCs and AI and all types of workloads that we built."
+  },
+  {
+    "start": 426.92,
+    "end": 433.52,
+    "text": "This can be done at a very high level too by the way, but think of it as some pre-processing,"
+  },
+  {
+    "start": 433.52,
+    "end": 438.68,
+    "text": "some task happening, some working happening, and then some joining happening and then eventually"
+  },
+  {
+    "start": 438.68,
+    "end": 446.38,
+    "text": "the ending. This graph is was always or for a really long time represented using these"
+  },
+  {
+    "start": 446.38,
+    "end": 456.4,
+    "text": "things called streams. So streams were essentially one sequential path of this graph. And what"
+  },
+  {
+    "start": 456.4,
+    "end": 463.32,
+    "text": "you will say is I have this stream a and it's going to have these these nodes on it, these"
+  },
+  {
+    "start": 463.32,
+    "end": 468.6,
+    "text": "kernels that I will run and then I will have a stream B somewhere here that will"
+  },
+  {
+    "start": 468.6,
+    "end": 473.08,
+    "text": "have this node on it and I will have mechanisms to synchronize the streams"
+  },
+  {
+    "start": 473.08,
+    "end": 478.56,
+    "text": "when I need to create essentially this task graph model. So CUDA was very much"
+  },
+  {
+    "start": 478.56,
+    "end": 483.24,
+    "text": "a stream centric model. Concurrency was expressed through these streams,"
+  },
+  {
+    "start": 483.24,
+    "end": 489.03999999999996,
+    "text": "kernels were run on these streams, mem copies were done between the host"
+  },
+  {
+    "start": 489.03999999999996,
+    "end": 494.24,
+    "text": "and device through the streams. Events are another thing that was used to"
+  },
+  {
+    "start": 494.24,
+    "end": 501.24,
+    "text": "synchronize these streams, these little lines that have drawn where the graph"
+  },
+  {
+    "start": 501.24,
+    "end": 511.32,
+    "text": "forks or joins. And that's what the crux of CUDA's runtime model to express"
+  },
+  {
+    "start": 511.32,
+    "end": 520.6,
+    "text": "concurrency and express these graphs and tasks. Later they realized that we are just"
+  },
+  {
+    "start": 520.6,
+    "end": 528.16,
+    "text": "building task graphs and then they added something called the graph capture which is essentially"
+  },
+  {
+    "start": 528.16,
+    "end": 532.28,
+    "text": "a way to capture these streams into a graph and then once you build the entire graph you"
+  },
+  {
+    "start": 532.28,
+    "end": 538.96,
+    "text": "can launch the entire graph all at once instead of launching a kernel at a time and that allowed"
+  },
+  {
+    "start": 538.96,
+    "end": 543.12,
+    "text": "them to cut down a lot of latency of launching these kernels."
+  },
+  {
+    "start": 543.12,
+    "end": 548.9200000000001,
+    "text": "So imagine a quantum workload where you have a ton of gates,"
+  },
+  {
+    "start": 548.9200000000001,
+    "end": 551.84,
+    "text": "like extreme amount of gates that you have to apply."
+  },
+  {
+    "start": 551.84,
+    "end": 555.44,
+    "text": "And each one of them ended up being a kernel launch."
+  },
+  {
+    "start": 555.44,
+    "end": 557.88,
+    "text": "And kernel launch was 10 microseconds."
+  },
+  {
+    "start": 557.88,
+    "end": 561.04,
+    "text": "So you will have 10 microseconds times the number of launches"
+  },
+  {
+    "start": 561.04,
+    "end": 563.48,
+    "text": "that you have to do, let's say a million launches"
+  },
+  {
+    "start": 563.48,
+    "end": 564.52,
+    "text": "that you have to do."
+  },
+  {
+    "start": 564.52,
+    "end": 567.24,
+    "text": "Most of your time is actually being spent just launching"
+  },
+  {
+    "start": 567.24,
+    "end": 568.24,
+    "text": "those kernels."
+  },
+  {
+    "start": 568.24,
+    "end": 574.24,
+    "text": "So a lot of optimizations were done on how to reduce that launch latency and let that"
+  },
+  {
+    "start": 574.24,
+    "end": 579.88,
+    "text": "not be an artificial bottleneck and have the compute be the actual bottleneck."
+  },
+  {
+    "start": 579.88,
+    "end": 586.24,
+    "text": "So that's what task graphs are building this graph capture using the streams or explicitly"
+  },
+  {
+    "start": 586.24,
+    "end": 593.24,
+    "text": "building this, representing this DAG and launching it all at once onto the GPU is all about."
+  },
+  {
+    "start": 593.24,
+    "end": 595.24,
+    "text": "Thank you."
+  },
+  {
+    "start": 600.0,
+    "end": 608.0,
+    "text": "Yeah, that's just an example."
+  },
+  {
+    "start": 608.0,
+    "end": 609.0,
+    "text": "This is an example."
+  },
+  {
+    "start": 609.0,
+    "end": 616.36,
+    "text": "So typically you could represent a gate with a thread within a kernel."
+  },
+  {
+    "start": 616.36,
+    "end": 619.88,
+    "text": "So like one run work item within a kernel."
+  },
+  {
+    "start": 619.88,
+    "end": 621.84,
+    "text": "There's a bunch of different ways to map this."
+  },
+  {
+    "start": 621.84,
+    "end": 627.64,
+    "text": "And all depends on how you want to load balance your computation on top of the GPU threads."
+  },
+  {
+    "start": 627.64,
+    "end": 631.52,
+    "text": "So GPUs are really, really, really massively parallel devices."
+  },
+  {
+    "start": 631.52,
+    "end": 638.72,
+    "text": "And if you're launching one gate per one kernel, it's pretty bad implementation."
+  },
+  {
+    "start": 638.72,
+    "end": 650.6,
+    "text": "You might want to do, paralyze it over qubits or some sort of finer granular object."
+  },
+  {
+    "start": 650.6,
+    "end": 657.04,
+    "text": "Yeah."
+  },
+  {
+    "start": 657.04,
+    "end": 659.52,
+    "text": "American correction or simulations."
+  },
+  {
+    "start": 659.52,
+    "end": 665.36,
+    "text": "So if you're simulating a circuit onto a classical computer"
+  },
+  {
+    "start": 665.36,
+    "end": 667.12,
+    "text": "and how that maps onto it, that's"
+  },
+  {
+    "start": 667.12,
+    "end": 669.24,
+    "text": "kind of what you would do, too."
+  },
+  {
+    "start": 669.24,
+    "end": 672.56,
+    "text": "That's what the contents are."
+  },
+  {
+    "start": 672.56,
+    "end": 675.04,
+    "text": "But that's just an example to illustrate"
+  },
+  {
+    "start": 675.04,
+    "end": 677.9,
+    "text": "that there are cases where you're entirely"
+  },
+  {
+    "start": 677.9,
+    "end": 680.24,
+    "text": "kernel launch latency bound."
+  },
+  {
+    "start": 680.24,
+    "end": 683.0,
+    "text": "And these graphs allows you to reduce that,"
+  },
+  {
+    "start": 683.0,
+    "end": 686.48,
+    "text": "because you can build the entire graph off and ahead of time."
+  },
+  {
+    "start": 686.48,
+    "end": 688.36,
+    "text": "And when you can build it ahead of time,"
+  },
+  {
+    "start": 688.36,
+    "end": 690.32,
+    "text": "you can queue it all ahead of time"
+  },
+  {
+    "start": 690.32,
+    "end": 696.0,
+    "text": "and pay it largely and see only once, which is very powerful."
+  },
+  {
+    "start": 696.0,
+    "end": 699.16,
+    "text": "And this applies to not just the one example,"
+  },
+  {
+    "start": 699.16,
+    "end": 704.36,
+    "text": "but a lot of examples in graph algorithms on GPUs,"
+  },
+  {
+    "start": 704.36,
+    "end": 708.36,
+    "text": "which is a very classical like HPC case,"
+  },
+  {
+    "start": 708.36,
+    "end": 710.84,
+    "text": "or even some of the AI workloads."
+  },
+  {
+    "start": 710.84,
+    "end": 722.48,
+    "text": "And then the last piece that I'll talk about here on this slide is the synchronizing synchronization"
+  },
+  {
+    "start": 722.48,
+    "end": 723.48,
+    "text": "mechanisms."
+  },
+  {
+    "start": 723.48,
+    "end": 729.0,
+    "text": "So I talked about it a little bit already where you have these like spaces, places in"
+  },
+  {
+    "start": 729.0,
+    "end": 734.4,
+    "text": "the graph where you want to fork or join the graphs of these points."
+  },
+  {
+    "start": 734.4,
+    "end": 738.9200000000001,
+    "text": "CUDA gives explicit APIs to synchronize streams as well."
+  },
+  {
+    "start": 738.92,
+    "end": 744.06,
+    "text": "So there's a way to synchronize a specific stream to a certain point in the host code."
+  },
+  {
+    "start": 744.06,
+    "end": 749.92,
+    "text": "So the CPU is saying here I will stop for all kernels within the stream to be done before"
+  },
+  {
+    "start": 749.92,
+    "end": 754.96,
+    "text": "I make forward progress because my forward progress kernel depends on the results from"
+  },
+  {
+    "start": 754.96,
+    "end": 756.36,
+    "text": "the previous kernels."
+  },
+  {
+    "start": 756.36,
+    "end": 758.48,
+    "text": "So I want to synchronize my stream."
+  },
+  {
+    "start": 758.48,
+    "end": 764.04,
+    "text": "I can synchronize the entire device, which is basically saying all workloads in the GPUs"
+  },
+  {
+    "start": 764.04,
+    "end": 766.6,
+    "text": "must synchronize to this point."
+  },
+  {
+    "start": 766.6,
+    "end": 772.28,
+    "text": "all everything running on the device must synchronize to this point before we can make"
+  },
+  {
+    "start": 772.28,
+    "end": 778.6800000000001,
+    "text": "or launch more work or make forward progress on the CPU side. There's events which are"
+  },
+  {
+    "start": 778.6800000000001,
+    "end": 784.52,
+    "text": "creating more fine-grained dependencies between streams and maybe devices even, multi-GPU programming."
+  },
+  {
+    "start": 784.52,
+    "end": 791.0799999999999,
+    "text": "And then there could be APIs that allow you to synchronize within a GPU kernel as well."
+  },
+  {
+    "start": 791.0799999999999,
+    "end": 796.36,
+    "text": "So not having to launch separate kernels or queue separate kernels onto a single stream"
+  },
+  {
+    "start": 796.36,
+    "end": 801.88,
+    "text": "and synchronize, but synchronize the various logical items, the thread blocks,"
+  },
+  {
+    "start": 802.9200000000001,
+    "end": 809.1600000000001,
+    "text": "using something called the grid.sync. So it's basically a fine-grained synchronization mechanism"
+  },
+  {
+    "start": 809.8,
+    "end": 813.4,
+    "text": "and there's within the kernel itself, so you never come back to the host."
+  },
+  {
+    "start": 813.96,
+    "end": 820.6800000000001,
+    "text": "So the top ones are all host-driven, which is host here is the CPU, and the grid.sync is"
+  },
+  {
+    "start": 820.6800000000001,
+    "end": 822.3199999999999,
+    "text": "from the GPU itself."
+  },
+  {
+    "start": 822.3199999999999,
+    "end": 826.06,
+    "text": "So GPU saying, like, I will synchronize all logical work"
+  },
+  {
+    "start": 826.06,
+    "end": 828.2,
+    "text": "items to this point before I make forward progress."
+  },
+  {
+    "start": 841.22,
+    "end": 841.72,
+    "text": "Yeah."
+  },
+  {
+    "start": 841.72,
+    "end": 856.52,
+    "text": "No, so the application, if you are building the application, what typically happens is"
+  },
+  {
+    "start": 856.52,
+    "end": 863.0799999999999,
+    "text": "the kernels themselves that are launched with this triple chevron notation are wrapped"
+  },
+  {
+    "start": 863.0799999999999,
+    "end": 867.52,
+    "text": "in a nice Python or C++ API."
+  },
+  {
+    "start": 867.52,
+    "end": 875.96,
+    "text": "And that Python or C++ API looks something like, you could say, computation, like computation,"
+  },
+  {
+    "start": 875.96,
+    "end": 881.2,
+    "text": "I'll just write computation a brackets, right?"
+  },
+  {
+    "start": 881.2,
+    "end": 883.04,
+    "text": "Like it's something like this."
+  },
+  {
+    "start": 883.04,
+    "end": 885.24,
+    "text": "And the application lives up here."
+  },
+  {
+    "start": 885.24,
+    "end": 889.96,
+    "text": "And the application is saying comp a, comp b, comp c, comp d."
+  },
+  {
+    "start": 889.96,
+    "end": 895.8399999999999,
+    "text": "And then maybe, maybe some API specifically in torch allows you to express streams as"
+  },
+  {
+    "start": 895.8399999999999,
+    "end": 900.0,
+    "text": "well because you might want to say comp A and B or it can be concur."
+  },
+  {
+    "start": 900.0,
+    "end": 906.96,
+    "text": "but COM C and B needs to be sequential. So there are some, only some at a high level,"
+  },
+  {
+    "start": 906.96,
+    "end": 913.84,
+    "text": "like higher level synchronization dependencies being expressed between these operators within"
+  },
+  {
+    "start": 913.84,
+    "end": 920.0,
+    "text": "something like Torch which builds these like larger applications, but not to the level of"
+  },
+  {
+    "start": 920.0,
+    "end": 925.92,
+    "text": "something like GoodSync. And there are finer levels than GoodSync too. There's within a workgroup"
+  },
+  {
+    "start": 925.92,
+    "end": 930.48,
+    "text": "you can synchronize logical things called warps array fronts and other stuff."
+  },
+  {
+    "start": 930.48,
+    "end": 933.52,
+    "text": "But at an application level, you're just building this thing."
+  },
+  {
+    "start": 936.4,
+    "end": 938.56,
+    "text": "Yeah, there's another question."
+  },
+  {
+    "start": 940.16,
+    "end": 947.04,
+    "text": "Yeah, just to clarify, because I'm also not sure if this is or if I understand correctly."
+  },
+  {
+    "start": 947.04,
+    "end": 951.6,
+    "text": "So for my understanding, a user would build something using torch."
+  },
+  {
+    "start": 951.6,
+    "end": 958.08,
+    "text": "So for this group, are we trying to do something more like torch?"
+  },
+  {
+    "start": 958.08,
+    "end": 961.52,
+    "text": "Or are we trying to build the basics that is below torch?"
+  },
+  {
+    "start": 961.52,
+    "end": 969.36,
+    "text": "Because I think this is very much overlapping with the already existing stuff in QLIMI slash QM"
+  },
+  {
+    "start": 969.36,
+    "end": 975.12,
+    "text": "I, where we try to unify about the devices and their capabilities and so on."
+  },
+  {
+    "start": 975.12,
+    "end": 980.12,
+    "text": "So I'm still not sure where we draw the line, okay,"
+  },
+  {
+    "start": 980.84,
+    "end": 984.8,
+    "text": "which is the responsibility of the runtime."
+  },
+  {
+    "start": 984.8,
+    "end": 986.72,
+    "text": "Are we trying to build the device runtime?"
+  },
+  {
+    "start": 986.72,
+    "end": 990.16,
+    "text": "Are we running across multiple devices"
+  },
+  {
+    "start": 990.16,
+    "end": 991.72,
+    "text": "on the application level?"
+  },
+  {
+    "start": 991.72,
+    "end": 994.24,
+    "text": "Or are we running stuff that is actually"
+  },
+  {
+    "start": 994.24,
+    "end": 995.48,
+    "text": "then running on the QPU?"
+  },
+  {
+    "start": 995.48,
+    "end": 999.8,
+    "text": "Because I think this is closer to where these streams are, right?"
+  },
+  {
+    "start": 1001.08,
+    "end": 1003.0,
+    "text": "Yeah, I think that's a fair assessment."
+  },
+  {
+    "start": 1003.0,
+    "end": 1005.92,
+    "text": "So the stuff that I personally work on"
+  },
+  {
+    "start": 1005.92,
+    "end": 1008.92,
+    "text": "is closer to the device side runtime,"
+  },
+  {
+    "start": 1008.92,
+    "end": 1012.96,
+    "text": "which is the layer that allows you to build"
+  },
+  {
+    "start": 1012.96,
+    "end": 1016.92,
+    "text": "what's inside these comp A's and comp B's and whatever,"
+  },
+  {
+    "start": 1016.92,
+    "end": 1018.88,
+    "text": "not at the Torx level."
+  },
+  {
+    "start": 1018.88,
+    "end": 1021.0,
+    "text": "You could construct something on top of that"
+  },
+  {
+    "start": 1021.0,
+    "end": 1024.52,
+    "text": "that builds the Torx side coupling together"
+  },
+  {
+    "start": 1024.52,
+    "end": 1027.96,
+    "text": "and then putting together the final application you need."
+  },
+  {
+    "start": 1027.96,
+    "end": 1029.96,
+    "text": "And that's something I'm also looking at separately,"
+  },
+  {
+    "start": 1029.96,
+    "end": 1034.28,
+    "text": "but space RT in particular, the project that I work on,"
+  },
+  {
+    "start": 1034.28,
+    "end": 1036.8,
+    "text": "focuses on the device-side runtime"
+  },
+  {
+    "start": 1036.8,
+    "end": 1040.8,
+    "text": "for a bunch of devices,"
+  },
+  {
+    "start": 1040.8,
+    "end": 1042.48,
+    "text": "not actually, I shouldn't say all."
+  },
+  {
+    "start": 1042.48,
+    "end": 1044.2,
+    "text": "It's doing that for GPUs,"
+  },
+  {
+    "start": 1044.2,
+    "end": 1048.4,
+    "text": "GPUs, NTUs, and AIEs, FPGAs,"
+  },
+  {
+    "start": 1048.4,
+    "end": 1051.2,
+    "text": "and also core computers."
+  },
+  {
+    "start": 1052.44,
+    "end": 1054.16,
+    "text": "And then as a follow-up,"
+  },
+  {
+    "start": 1054.16,
+    "end": 1058.64,
+    "text": "this would then also assume that hardware vendors"
+  },
+  {
+    "start": 1058.6399999999999,
+    "end": 1061.84,
+    "text": "allow you to install the SRAM type on the devices, right?"
+  },
+  {
+    "start": 1061.84,
+    "end": 1063.24,
+    "text": "I mean, I'm not."
+  },
+  {
+    "start": 1063.24,
+    "end": 1063.74,
+    "text": "Correct."
+  },
+  {
+    "start": 1063.74,
+    "end": 1064.34,
+    "text": "Yes."
+  },
+  {
+    "start": 1064.34,
+    "end": 1068.5,
+    "text": "So really averted anyone or any of the vendors"
+  },
+  {
+    "start": 1068.5,
+    "end": 1070.1399999999999,
+    "text": "gives you this level of access, right?"
+  },
+  {
+    "start": 1070.1399999999999,
+    "end": 1072.66,
+    "text": "Where you're very, OK, these are our controllers, right?"
+  },
+  {
+    "start": 1072.66,
+    "end": 1075.86,
+    "text": "We control what is running on our hardware,"
+  },
+  {
+    "start": 1075.86,
+    "end": 1079.42,
+    "text": "and we don't even give you this level of access usually, right?"
+  },
+  {
+    "start": 1079.42,
+    "end": 1080.34,
+    "text": "Yeah, precisely."
+  },
+  {
+    "start": 1080.34,
+    "end": 1083.02,
+    "text": "So for a quantum, that's correct."
+  },
+  {
+    "start": 1083.02,
+    "end": 1086.54,
+    "text": "But when we are talking about like coupling together,"
+  },
+  {
+    "start": 1086.54,
+    "end": 1089.9,
+    "text": "Quantum plus other devices."
+  },
+  {
+    "start": 1089.9,
+    "end": 1093.1,
+    "text": "So for the quantum part, if the vendor, obviously,"
+  },
+  {
+    "start": 1093.1,
+    "end": 1097.9,
+    "text": "it's close source information if that level is not allowed"
+  },
+  {
+    "start": 1097.9,
+    "end": 1103.26,
+    "text": "or available, we would just use the underlying available"
+  },
+  {
+    "start": 1103.26,
+    "end": 1106.78,
+    "text": "runtime on the vendor, so vendor-specific runtime,"
+  },
+  {
+    "start": 1106.78,
+    "end": 1110.78,
+    "text": "on being able to communicate between multiple devices,"
+  },
+  {
+    "start": 1110.78,
+    "end": 1115.54,
+    "text": "however we use space RT to support the rest of the."
+  },
+  {
+    "start": 1117.14,
+    "end": 1122.98,
+    "text": "Yes, so my problem is that I see an incoming clash of level of abstraction"
+  },
+  {
+    "start": 1123.38,
+    "end": 1127.66,
+    "text": "because so all the stuff you're doing here is very low level"
+  },
+  {
+    "start": 1127.66,
+    "end": 1131.66,
+    "text": "while quantum stuff would probably be a lot higher level than this."
+  },
+  {
+    "start": 1132.9,
+    "end": 1137.42,
+    "text": "So if you have like latency constraints, for example,"
+  },
+  {
+    "start": 1137.42,
+    "end": 1142.42,
+    "text": "but you have to go to a very high abstraction layer to even access the quantum hardware."
+  },
+  {
+    "start": 1142.42,
+    "end": 1148.42,
+    "text": "I think this would be quite difficult to achieve like a synchronization there."
+  },
+  {
+    "start": 1151.42,
+    "end": 1158.42,
+    "text": "I mean, I see this working if you had access to like the on chip controllers for quantum device,"
+  },
+  {
+    "start": 1158.42,
+    "end": 1161.42,
+    "text": "but I don't think that's a realistic assumption."
+  },
+  {
+    "start": 1162.42,
+    "end": 1165.42,
+    "text": "Yeah, I think that's fair, but..."
+  },
+  {
+    "start": 1167.42,
+    "end": 1176.06,
+    "text": "I'm wondering if QDMA and some of the other layers would allow us to"
+  },
+  {
+    "start": 1176.06,
+    "end": 1182.02,
+    "text": "unify at least some level of capabilities around the runtime and you can still"
+  },
+  {
+    "start": 1182.02,
+    "end": 1188.74,
+    "text": "express some of it but in terms of latency constraints there might be..."
+  },
+  {
+    "start": 1188.74,
+    "end": 1193.5,
+    "text": "So there are other latencies that we're not talking about here. There could be"
+  },
+  {
+    "start": 1193.5,
+    "end": 1198.7,
+    "text": "latencies depending on the classical computers as well that are clearly like"
+  },
+  {
+    "start": 1198.7,
+    "end": 1201.98,
+    "text": "anyone's kind of"
+  },
+  {
+    "start": 1200.0,
+    "end": 1203.8,
+    "text": "of playing field that is not well defined yet."
+  },
+  {
+    "start": 1203.8,
+    "end": 1205.56,
+    "text": "So if you want to do, for example,"
+  },
+  {
+    "start": 1205.56,
+    "end": 1208.48,
+    "text": "quantum error correction on another system"
+  },
+  {
+    "start": 1208.48,
+    "end": 1211.12,
+    "text": "and that system is open source,"
+  },
+  {
+    "start": 1211.12,
+    "end": 1213.48,
+    "text": "what does that latency requirement look like?"
+  },
+  {
+    "start": 1213.48,
+    "end": 1215.76,
+    "text": "How do you launch work on that?"
+  },
+  {
+    "start": 1215.76,
+    "end": 1217.44,
+    "text": "What does the typical exchange look like"
+  },
+  {
+    "start": 1217.44,
+    "end": 1219.72,
+    "text": "between the quantum computer and that device?"
+  },
+  {
+    "start": 1221.7,
+    "end": 1224.08,
+    "text": "I'm interested in what your thoughts are"
+  },
+  {
+    "start": 1224.08,
+    "end": 1226.12,
+    "text": "on that aspect of it,"
+  },
+  {
+    "start": 1226.12,
+    "end": 1229.18,
+    "text": "like where could something like this, but in maybe."
+  },
+  {
+    "start": 1230.0,
+    "end": 1234.44,
+    "text": "Yeah, I'm not super clear on this myself."
+  },
+  {
+    "start": 1234.44,
+    "end": 1237.68,
+    "text": "This is just, I'm asking this because I'm trying to understand if you have a clearer"
+  },
+  {
+    "start": 1237.68,
+    "end": 1243.04,
+    "text": "picture than I do because I'm struggling with the same problem that I don't know, what"
+  },
+  {
+    "start": 1243.04,
+    "end": 1244.68,
+    "text": "is this going to be."
+  },
+  {
+    "start": 1244.68,
+    "end": 1253.44,
+    "text": "And I think for Q2M, I, they're trying to unify some of these things, but then again,"
+  },
+  {
+    "start": 1253.44,
+    "end": 1257.68,
+    "text": "I think there's a different level of abstraction because there's something that lives already"
+  },
+  {
+    "start": 1257.68,
+    "end": 1263.68,
+    "text": "on top of quantum devices, maybe John, you can add something else."
+  },
+  {
+    "start": 1265.84,
+    "end": 1270.88,
+    "text": "Of course, I mean, this is maybe more speculative as well, but I think maybe the reason why many"
+  },
+  {
+    "start": 1270.88,
+    "end": 1273.84,
+    "text": "vendors don't give you the lower level access is because they want to be able to do things like"
+  },
+  {
+    "start": 1273.84,
+    "end": 1279.92,
+    "text": "calibrations or like load the items in. Things that also cause other latency constraints."
+  },
+  {
+    "start": 1282.24,
+    "end": 1285.68,
+    "text": "I don't know if those were already priced in, I didn't want to sort of jump ahead of the presentation,"
+  },
+  {
+    "start": 1285.68,
+    "end": 1292.48,
+    "text": "but there might be some concerns that of why it's kind of hard to integrate at this lower level"
+  },
+  {
+    "start": 1292.48,
+    "end": 1301.6,
+    "text": "versus like the higher level that had a QD of i to throw in my offer."
+  },
+  {
+    "start": 1315.68,
+    "end": 1334.64,
+    "text": "Yeah, that makes sense."
+  },
+  {
+    "start": 1334.64,
+    "end": 1341.84,
+    "text": "I think it might be, I think one thing that I have been struggling with or have not been"
+  },
+  {
+    "start": 1341.84,
+    "end": 1348.72,
+    "text": "able to communicate as well is who the user is. It might be a good idea to put some sort of"
+  },
+  {
+    "start": 1348.72,
+    "end": 1355.12,
+    "text": "doc together of various different types of users for different distractions because there are levels,"
+  },
+  {
+    "start": 1355.68,
+    "end": 1362.88,
+    "text": "there are quite a lot of levels to this because even in some of the classical like world, you don't"
+  },
+  {
+    "start": 1362.88,
+    "end": 1369.3600000000001,
+    "text": "typically, not everyone would typically write the kernels themselves that will call this the runtime"
+  },
+  {
+    "start": 1369.3600000000001,
+    "end": 1374.24,
+    "text": "stuff for efficiency and performance and whatnot or latency requirements, right?"
+  },
+  {
+    "start": 1374.24,
+    "end": 1380.32,
+    "text": "They would just call a Kiskit level or some higher level API that just does that thing for you"
+  },
+  {
+    "start": 1381.3600000000001,
+    "end": 1389.76,
+    "text": "and builds that workload for you. And often the two get kind of mixed stuff together a lot."
+  },
+  {
+    "start": 1399.3600000000001,
+    "end": 1412.72,
+    "text": "Okay, yes, I mean this is an important point to make because an application sort of developer"
+  },
+  {
+    "start": 1412.72,
+    "end": 1423.68,
+    "text": "wants to access the device to run my quantum algorithms that are built on top of, say,"
+  },
+  {
+    "start": 1423.68,
+    "end": 1435.0,
+    "text": "error-corrected qubits, I do not want to need to know how the error... unless I need to"
+  },
+  {
+    "start": 1435.0,
+    "end": 1447.92,
+    "text": "know. But in general, I do not want the details of the underlying error correction code implementation"
+  },
+  {
+    "start": 1447.92,
+    "end": 1454.92,
+    "text": "exposed. So we have two different abstraction layers."
+  },
+  {
+    "start": 1454.92,
+    "end": 1464.08,
+    "text": "The one that sees the logical representation of the hardware,"
+  },
+  {
+    "start": 1464.08,
+    "end": 1469.52,
+    "text": "and then the one that actually sees the physical layer."
+  },
+  {
+    "start": 1469.52,
+    "end": 1484.4,
+    "text": "especially if we go to the era of error-corrected qubits, these two will be separate."
+  },
+  {
+    "start": 1484.4,
+    "end": 1494.68,
+    "text": "In current hardware, your physical qubits are the real qubits."
+  },
+  {
+    "start": 1494.68,
+    "end": 1499.96,
+    "text": "Of course I don't care even now I don't care about how do you..."
+  },
+  {
+    "start": 1500.0,
+    "end": 1508.6,
+    "text": "implement the pulses or whatever you need to do for the specific physical implementation."
+  },
+  {
+    "start": 1508.6,
+    "end": 1520.2,
+    "text": "But it still is a different interacting with the actual physical qubit in the sense."
+  },
+  {
+    "start": 1520.2,
+    "end": 1529.0,
+    "text": "In the error corrected era, I want to interact with the logic for qubit, not with actual"
+  },
+  {
+    "start": 1529.0,
+    "end": 1540.02,
+    "text": "or dozens or hundreds of physical qubits that implement this error correct at logical"
+  },
+  {
+    "start": 1540.02,
+    "end": 1541.02,
+    "text": "qubit."
+  },
+  {
+    "start": 1541.02,
+    "end": 1551.86,
+    "text": "This one makes sense."
+  },
+  {
+    "start": 1551.86,
+    "end": 1560.58,
+    "text": "And there's definitely also different latency requirements between these two, what you want"
+  },
+  {
+    "start": 1560.58,
+    "end": 1566.38,
+    "text": "to do for the, again, for dealing with error correction codes themselves."
+  },
+  {
+    "start": 1566.38,
+    "end": 1580.78,
+    "text": "You have very stringent latency and real-time requirements for the actual compute that's"
+  },
+  {
+    "start": 1580.78,
+    "end": 1591.78,
+    "text": "I mean, still a concern, but less, less detrimental if you do not meet it exactly."
+  },
+  {
+    "start": 1610.78,
+    "end": 1628.46,
+    "text": "So that relates to how the actual kernel, like the analogous term here is the kernel,"
+  },
+  {
+    "start": 1628.46,
+    "end": 1629.62,
+    "text": "how the kernel is written."
+  },
+  {
+    "start": 1629.62,
+    "end": 1637.22,
+    "text": "So that combination phase is completely separate from how the work gets to the device itself"
+  },
+  {
+    "start": 1637.22,
+    "end": 1638.94,
+    "text": "or launched to the device."
+  },
+  {
+    "start": 1638.94,
+    "end": 1645.3,
+    "text": "It is related, but the compiler is doing that all on its own."
+  },
+  {
+    "start": 1645.3,
+    "end": 1651.46,
+    "text": "That's compiler's job to make those logical and physical connections and how the mapping"
+  },
+  {
+    "start": 1651.46,
+    "end": 1657.06,
+    "text": "is going to work or within the kernel itself."
+  },
+  {
+    "start": 1657.06,
+    "end": 1664.04,
+    "text": "The execution of the kernel itself is the boundary at which the runtime differentiates"
+  },
+  {
+    "start": 1664.04,
+    "end": 1671.04,
+    "text": "from the compiler's task."
+  },
+  {
+    "start": 1671.04,
+    "end": 1679.76,
+    "text": "The compiler would most definitely come first in terms of compiling the said implementation"
+  },
+  {
+    "start": 1679.76,
+    "end": 1686.6,
+    "text": "or whatever that's going to get executed on the QPU and the runtime will be responsible"
+  },
+  {
+    "start": 1686.6,
+    "end": 1693.6,
+    "text": "for then taking that thing and putting it on the perspective system."
+  },
+  {
+    "start": 1693.6,
+    "end": 1694.6,
+    "text": "Yeah."
+  },
+  {
+    "start": 1707.6,
+    "end": 1712.6,
+    "text": "So that is, from my perspective, that sounds more like a programming model."
+  },
+  {
+    "start": 1712.6,
+    "end": 1721.16,
+    "text": "like how do I actually tell the compiler express these qubits? That to me is some sort of a language"
+  },
+  {
+    "start": 1721.16,
+    "end": 1731.32,
+    "text": "job, like some language expressing what those like mappings look like or not the physical part,"
+  },
+  {
+    "start": 1731.32,
+    "end": 1737.6399999999999,
+    "text": "just how to express the logical qubits and what am I doing with them in the first place."
+  },
+  {
+    "start": 1742.6,
+    "end": 1768.6,
+    "text": "Yeah."
+  },
+  {
+    "start": 1772.6,
+    "end": 1795.56,
+    "text": "Yes."
+  },
+  {
+    "start": 1795.56,
+    "end": 1799.9,
+    "text": "Yeah, yeah, yeah, sorry."
+  },
+  {
+    "start": 1800.0,
+    "end": 1801.0,
+    "text": "It doesn't have to be though."
+  },
+  {
+    "start": 1801.0,
+    "end": 1804.68,
+    "text": "It's just how we write some of those programs today."
+  },
+  {
+    "start": 1804.68,
+    "end": 1810.64,
+    "text": "But you could most definitely express the shader code, which is basically compiled into"
+  },
+  {
+    "start": 1810.64,
+    "end": 1816.96,
+    "text": "some intermediate language, like P-tax or something, like assembly code, that can be"
+  },
+  {
+    "start": 1816.96,
+    "end": 1823.94,
+    "text": "completely separately compiled and shipped and maintained from the launch part itself."
+  },
+  {
+    "start": 1823.94,
+    "end": 1829.44,
+    "text": "So the launch part is typically the driver or what we call the launch driver or whatever,"
+  },
+  {
+    "start": 1829.44,
+    "end": 1833.48,
+    "text": "can be written separately, also compiled separately,"
+  },
+  {
+    "start": 1833.48,
+    "end": 1836.52,
+    "text": "to wherever you want to map that to."
+  },
+  {
+    "start": 1839.48,
+    "end": 1840.48,
+    "text": "Does that kind of make sense?"
+  },
+  {
+    "start": 1844.24,
+    "end": 1845.08,
+    "text": "Yeah, me."
+  },
+  {
+    "start": 1853.92,
+    "end": 1854.76,
+    "text": "Yeah."
+  },
+  {
+    "start": 1859.44,
+    "end": 1864.72,
+    "text": "Yes, that's when it gets launched."
+  },
+  {
+    "start": 1864.72,
+    "end": 1866.48,
+    "text": "Yes, yes, yes."
+  },
+  {
+    "start": 1866.48,
+    "end": 1872.72,
+    "text": "By the application."
+  },
+  {
+    "start": 1872.72,
+    "end": 1874.72,
+    "text": "Yes, precisely."
+  },
+  {
+    "start": 1874.72,
+    "end": 1875.72,
+    "text": "Yes."
+  },
+  {
+    "start": 1875.72,
+    "end": 1876.72,
+    "text": "Yes."
+  },
+  {
+    "start": 1876.72,
+    "end": 1905.44,
+    "text": "That is the way it works."
+  },
+  {
+    "start": 1905.44,
+    "end": 1909.6,
+    "text": "that is defined by the person building the application or the algorithm, right?"
+  },
+  {
+    "start": 1909.6,
+    "end": 1914.02,
+    "text": "Like that's the only person that knows like how these things are going to actually"
+  },
+  {
+    "start": 1914.02,
+    "end": 1919.56,
+    "text": "stitch together unless there's like always a clear dependency that you can just resolve,"
+  },
+  {
+    "start": 1919.56,
+    "end": 1926.92,
+    "text": "which can be done in a compiler. But if there's not like always a guaranteed dependency,"
+  },
+  {
+    "start": 1926.92,
+    "end": 1932.6,
+    "text": "then you're asking like one scientist to be to say like, hey, I know that I want to"
+  },
+  {
+    "start": 1932.6,
+    "end": 1936.1399999999999,
+    "text": "build this workload and this workload is going to launch a bunch of stuff and"
+  },
+  {
+    "start": 1936.1399999999999,
+    "end": 1939.48,
+    "text": "that stuff is going to be launched on quantum computers it might be launched"
+  },
+  {
+    "start": 1939.48,
+    "end": 1946.48,
+    "text": "in heterogeneous like platforms where there's CPU, GPU, whatever and I will call"
+  },
+  {
+    "start": 1946.48,
+    "end": 1950.88,
+    "text": "these like kernels or COMB, COMB, COMB, C, whatever and build that"
+  },
+  {
+    "start": 1950.88,
+    "end": 1955.22,
+    "text": "bag myself because only I know the correct order in which they need to"
+  },
+  {
+    "start": 1955.22,
+    "end": 1960.0,
+    "text": "happen to build this workload or this application and once that application"
+  },
+  {
+    "start": 1960.0,
+    "end": 1965.76,
+    "text": "is built, it can be further modular that gets shipped within, for example, something like"
+  },
+  {
+    "start": 1965.76,
+    "end": 1971.08,
+    "text": "KissKit. And someone on top of KissKit can use it to build larger applications, larger"
+  },
+  {
+    "start": 1971.08,
+    "end": 1978.6399999999999,
+    "text": "workloads, and would have no idea how the internal launching of various different DAG"
+  },
+  {
+    "start": 1978.6399999999999,
+    "end": 1984.16,
+    "text": "thing works. They just know that I need to call this one thing."
+  },
+  {
+    "start": 1984.16,
+    "end": 1991.16,
+    "text": "Correct, yeah."
+  },
+  {
+    "start": 1991.16,
+    "end": 1998.16,
+    "text": "Yes."
+  },
+  {
+    "start": 1998.16,
+    "end": 2003.16,
+    "text": "Yes."
+  },
+  {
+    "start": 2003.16,
+    "end": 2013.76,
+    "text": "Yes. Yes. Yeah. Yeah."
+  },
+  {
+    "start": 2013.76,
+    "end": 2016.56,
+    "text": "Often, performance code does exactly that."
+  },
+  {
+    "start": 2016.56,
+    "end": 2018.52,
+    "text": "So if you want to write like really,"
+  },
+  {
+    "start": 2018.52,
+    "end": 2020.6399999999999,
+    "text": "really hyper-performance code,"
+  },
+  {
+    "start": 2020.6399999999999,
+    "end": 2024.16,
+    "text": "you would typically the person working,"
+  },
+  {
+    "start": 2024.16,
+    "end": 2026.6,
+    "text": "the writing the high-level application kind of"
+  },
+  {
+    "start": 2026.6,
+    "end": 2030.48,
+    "text": "owns the entire space and squishes them together."
+  },
+  {
+    "start": 2030.48,
+    "end": 2032.72,
+    "text": "And why you might want to squish them together is"
+  },
+  {
+    "start": 2032.72,
+    "end": 2035.52,
+    "text": "because in the previous case, you didn't know anything"
+  },
+  {
+    "start": 2035.52,
+    "end": 2038.8,
+    "text": "about the DAG that was within each one of those tiny things."
+  },
+  {
+    "start": 2038.8,
+    "end": 2042.12,
+    "text": "There might be overlap between the tiny DAG inside that"
+  },
+  {
+    "start": 2042.12,
+    "end": 2045.56,
+    "text": "and some other tiny DAGs that are in the larger application."
+  },
+  {
+    "start": 2045.56,
+    "end": 2048.08,
+    "text": "And you might wanna fuse them together"
+  },
+  {
+    "start": 2048.08,
+    "end": 2050.28,
+    "text": "or overlap them better to write"
+  },
+  {
+    "start": 2050.28,
+    "end": 2051.92,
+    "text": "like really high-performance code."
+  },
+  {
+    "start": 2052.92,
+    "end": 2057.24,
+    "text": "But that's when you wanna go from like 80 to like 99%"
+  },
+  {
+    "start": 2057.24,
+    "end": 2059.84,
+    "text": "of the performance of that high gap"
+  },
+  {
+    "start": 2059.84,
+    "end": 2062.0,
+    "text": "that you might want to close."
+  },
+  {
+    "start": 2062.0,
+    "end": 2067.2200000000003,
+    "text": "And in some cases, it never makes sense to like squish them together because the operation"
+  },
+  {
+    "start": 2067.2200000000003,
+    "end": 2076.7200000000003,
+    "text": "always is sequential or some level of dependencies always like present that you know how to do."
+  },
+  {
+    "start": 2076.7200000000003,
+    "end": 2081.58,
+    "text": "Sorry, it's like a very complex space that I'm trying to define, but the runtime itself"
+  },
+  {
+    "start": 2081.58,
+    "end": 2084.4,
+    "text": "is in that convey a copy."
+  },
+  {
+    "start": 2084.4,
+    "end": 2089.8,
+    "text": "Like that's the part that I personally am talking about right now."
+  },
+  {
+    "start": 2089.8,
+    "end": 2091.8,
+    "text": "up."
+  },
+  {
+    "start": 2100.0,
+    "end": 2118.64,
+    "text": "Yeah, precisely."
+  },
+  {
+    "start": 2118.64,
+    "end": 2125.68,
+    "text": "So I think without looking at the full end-to-end flow, there is no complete story, right?"
+  },
+  {
+    "start": 2125.68,
+    "end": 2132.68,
+    "text": "We have to do that, but that includes the compiler works stream because they would be"
+  },
+  {
+    "start": 2132.68,
+    "end": 2138.4,
+    "text": "the ones that are actually compiling the code that will get executed in some capacity."
+  },
+  {
+    "start": 2138.4,
+    "end": 2145.6,
+    "text": "That includes whatever higher level language is allowed to express some of these comp"
+  },
+  {
+    "start": 2145.6,
+    "end": 2148.08,
+    "text": "a comp b algorithms."
+  },
+  {
+    "start": 2148.08,
+    "end": 2152.72,
+    "text": "And it includes what gets built on top of it, which may be something like his kit or his"
+  },
+  {
+    "start": 2152.72,
+    "end": 2159.4,
+    "text": "get that stitches them together in some regards to create the end-to-end flow, which is where"
+  },
+  {
+    "start": 2159.4,
+    "end": 2168.36,
+    "text": "most of maybe performance timing or some sort of result analysis happens."
+  },
+  {
+    "start": 2168.36,
+    "end": 2176.0,
+    "text": "It's kind of like my view of the whole space."
+  },
+  {
+    "start": 2176.0,
+    "end": 2189.2,
+    "text": "No, no, this is, this is, yeah, this is very useful and what some of the other people"
+  },
+  {
+    "start": 2189.2,
+    "end": 2195.84,
+    "text": "have pointed out on the, on the closed nature of some of the runtime associated with quantum"
+  },
+  {
+    "start": 2195.84,
+    "end": 2202.04,
+    "text": "is also a very important question because there might be a, an argument for some sort"
+  },
+  {
+    "start": 2202.04,
+    "end": 2205.36,
+    "text": "So I don't want to call it a standard,"
+  },
+  {
+    "start": 2205.36,
+    "end": 2210.96,
+    "text": "but some level of a standard, which exposes low level"
+  },
+  {
+    "start": 2210.96,
+    "end": 2213.76,
+    "text": "mechanisms that still allow you to build a runtime,"
+  },
+  {
+    "start": 2213.76,
+    "end": 2216.08,
+    "text": "like this on top of it."
+  },
+  {
+    "start": 2216.08,
+    "end": 2219.0,
+    "text": "But that requires, obviously, vendor partnership"
+  },
+  {
+    "start": 2219.0,
+    "end": 2221.68,
+    "text": "and a lot more than what I'm talking about."
+  },
+  {
+    "start": 2221.68,
+    "end": 2224.36,
+    "text": "But I can envision in a perfect world that"
+  },
+  {
+    "start": 2224.36,
+    "end": 2228.52,
+    "text": "could exist in some capacity."
+  },
+  {
+    "start": 2228.52,
+    "end": 2230.92,
+    "text": "like there is an abstraction that sits on top of that."
+  },
+  {
+    "start": 2249.28,
+    "end": 2250.12,
+    "text": "Yeah."
+  },
+  {
+    "start": 2250.88,
+    "end": 2251.72,
+    "text": "Yeah."
+  },
+  {
+    "start": 2251.72,
+    "end": 2254.28,
+    "text": "Let me just, if I can,"
+  },
+  {
+    "start": 2254.28,
+    "end": 2257.44,
+    "text": "give me one second, I'm gonna add a slide"
+  },
+  {
+    "start": 2257.44,
+    "end": 2263.84,
+    "text": "And then, actually, I have a perfect thing for this."
+  },
+  {
+    "start": 2273.0,
+    "end": 2277.44,
+    "text": "Sorry, it gave me just one second as I published."
+  },
+  {
+    "start": 2277.44,
+    "end": 2283.08,
+    "text": "There is this article that just recently got published."
+  },
+  {
+    "start": 2283.08,
+    "end": 2287.08,
+    "text": "I actually really, really liked this."
+  },
+  {
+    "start": 2287.08,
+    "end": 2292.48,
+    "text": "It is a AI chip architecture comparison."
+  },
+  {
+    "start": 2292.48,
+    "end": 2297.24,
+    "text": "So it talks about essentially a ton of different architectures"
+  },
+  {
+    "start": 2297.24,
+    "end": 2300.44,
+    "text": "that have come out around AI space."
+  },
+  {
+    "start": 2300.44,
+    "end": 2302.04,
+    "text": "And what are some of the commonalities"
+  },
+  {
+    "start": 2302.04,
+    "end": 2304.4,
+    "text": "and what are their various different bets"
+  },
+  {
+    "start": 2304.4,
+    "end": 2308.56,
+    "text": "on differentiations to essentially do better"
+  },
+  {
+    "start": 2308.56,
+    "end": 2311.32,
+    "text": "in this AI space?"
+  },
+  {
+    "start": 2311.32,
+    "end": 2314.36,
+    "text": "The point in this meeting isn't necessary"
+  },
+  {
+    "start": 2314.36,
+    "end": 2316.12,
+    "text": "to talk about the underlying architecture."
+  },
+  {
+    "start": 2316.12,
+    "end": 2320.96,
+    "text": "to talk about how some of the similarities allow you to still program them as if they"
+  },
+  {
+    "start": 2320.96,
+    "end": 2326.48,
+    "text": "were similar looking things, but they are very, sometimes they're very different."
+  },
+  {
+    "start": 2326.48,
+    "end": 2337.4,
+    "text": "So there's like stuff like NVIDIA GPUs, which I'll show the pictures of two things."
+  },
+  {
+    "start": 2337.4,
+    "end": 2339.72,
+    "text": "So these are very similar looking architectures."
+  },
+  {
+    "start": 2339.72,
+    "end": 2348.72,
+    "text": "So what GPUs say is that we will create a distinction about what is sort of the memory"
+  },
+  {
+    "start": 2348.72,
+    "end": 2356.16,
+    "text": "hierarchy and what is a compute hierarchy and kind of give you a sense of both and control"
+  },
+  {
+    "start": 2356.16,
+    "end": 2363.36,
+    "text": "for both that you can map logical entities to."
+  },
+  {
+    "start": 2363.36,
+    "end": 2367.98,
+    "text": "So this is what NVIDIA's thing looks like and this is what AMD's thing looks like,"
+  },
+  {
+    "start": 2367.98,
+    "end": 2373.46,
+    "text": "and you can see they're very like even just with a block diagram quickly looking at it"
+  },
+  {
+    "start": 2373.46,
+    "end": 2374.46,
+    "text": "with no contact."
+  },
+  {
+    "start": 2374.46,
+    "end": 2378.06,
+    "text": "They look very similar."
+  },
+  {
+    "start": 2378.06,
+    "end": 2381.58,
+    "text": "The reason why is because the problems that they're solving is obviously very similar"
+  },
+  {
+    "start": 2381.58,
+    "end": 2386.78,
+    "text": "so they end up being similar looking architectures but it's a bunch of like these HBM's which"
+  },
+  {
+    "start": 2386.78,
+    "end": 2394.3,
+    "text": "are the memory, the giant like memory spaces at the very slowest top end of it with a bunch"
+  },
+  {
+    "start": 2394.3,
+    "end": 2397.46,
+    "text": "to couple together with a bunch of faster memory,"
+  },
+  {
+    "start": 2397.46,
+    "end": 2399.98,
+    "text": "like the L2 cache, and then there is like"
+  },
+  {
+    "start": 2399.98,
+    "end": 2400.18,
+    "text": "the"
+  },
+  {
+    "start": 2400.0,
+    "end": 2406.28,
+    "text": "darker green boxes which represent like a local, some sort of local cash within"
+  },
+  {
+    "start": 2406.28,
+    "end": 2412.24,
+    "text": "the GPU. And the hierarchy looks very similar even though it is slightly"
+  },
+  {
+    "start": 2412.24,
+    "end": 2415.68,
+    "text": "different but very similar looking hierarchy because they're again solving"
+  },
+  {
+    "start": 2415.68,
+    "end": 2421.12,
+    "text": "the same issue problem. There are other chips that are not similar looking."
+  },
+  {
+    "start": 2421.12,
+    "end": 2428.12,
+    "text": "They are more spatial chips like this thing."
+  },
+  {
+    "start": 2428.12,
+    "end": 2433.12,
+    "text": "Maybe there's a better one that I can show."
+  },
+  {
+    "start": 2433.12,
+    "end": 2435.12,
+    "text": "This article is amazing by the way."
+  },
+  {
+    "start": 2435.12,
+    "end": 2441.12,
+    "text": "Like maybe something like this which talks about a more like,"
+  },
+  {
+    "start": 2441.12,
+    "end": 2443.12,
+    "text": "this is a seabird ship."
+  },
+  {
+    "start": 2443.12,
+    "end": 2447.12,
+    "text": "So it talks about more of how if the compute and the data fabric"
+  },
+  {
+    "start": 2447.12,
+    "end": 2452.26,
+    "text": "was like all together and there wasn't like this L2 caches or caches that you"
+  },
+  {
+    "start": 2452.26,
+    "end": 2458.22,
+    "text": "relied on and things had to perfectly flow from one corner to another to do a"
+  },
+  {
+    "start": 2458.22,
+    "end": 2464.22,
+    "text": "task really really well. Regardless of how the underlying architecture is"
+  },
+  {
+    "start": 2464.22,
+    "end": 2471.42,
+    "text": "represented, you can always think about all of these chips as logical work items"
+  },
+  {
+    "start": 2471.42,
+    "end": 2477.06,
+    "text": "that's that gets scheduled on top of it and some sort of data movement. So there"
+  },
+  {
+    "start": 2477.06,
+    "end": 2483.3,
+    "text": "two core principles, how work gets mapped, which is the compute part of it, and how data"
+  },
+  {
+    "start": 2483.3,
+    "end": 2488.86,
+    "text": "movement works, which is the memory part of it, and the two combined together to make"
+  },
+  {
+    "start": 2488.86,
+    "end": 2496.86,
+    "text": "a software ecosystem which includes the programming language, the compilers, and the runtime,"
+  },
+  {
+    "start": 2496.86,
+    "end": 2498.62,
+    "text": "all three large components."
+  },
+  {
+    "start": 2498.62,
+    "end": 2503.34,
+    "text": "And then you, then that gets mapped to the typical frameworks like Torch, and you use"
+  },
+  {
+    "start": 2503.34,
+    "end": 2508.98,
+    "text": "towards to create cool applications and do AI stuff on top of it. I know that's"
+  },
+  {
+    "start": 2508.98,
+    "end": 2514.66,
+    "text": "inherently very different from how quantum computers work. However, if you"
+  },
+  {
+    "start": 2514.66,
+    "end": 2518.82,
+    "text": "think of quantum computers in scope of the entire application, my thought"
+  },
+  {
+    "start": 2518.82,
+    "end": 2524.14,
+    "text": "process is they fit in a very similar world where they need to do their like"
+  },
+  {
+    "start": 2524.14,
+    "end": 2530.26,
+    "text": "the specialized accelerator. Something similar like the W and M.A. course,"
+  },
+  {
+    "start": 2530.26,
+    "end": 2534.9,
+    "text": "There's not a good picture for this, but imagine this thing on the right hand side"
+  },
+  {
+    "start": 2535.54,
+    "end": 2541.46,
+    "text": "Inside one of the AMD chips or NVIDIA chips. There's saying there's this thing called matrix score or tensor cores"
+  },
+  {
+    "start": 2542.42,
+    "end": 2543.46,
+    "text": "also"
+  },
+  {
+    "start": 2543.46,
+    "end": 2547.62,
+    "text": "accessible to WMMA instructions just one simple instruction that says"
+  },
+  {
+    "start": 2548.18,
+    "end": 2552.62,
+    "text": "Launch an insane amount of matrix multiplication on top of these computers"
+  },
+  {
+    "start": 2553.3,
+    "end": 2557.18,
+    "text": "And I don't care how that happens internally the hardware takes care of it"
+  },
+  {
+    "start": 2557.18,
+    "end": 2563.18,
+    "text": "The Q-Bits are handled by the quantum computer like themselves in some capacity."
+  },
+  {
+    "start": 2563.18,
+    "end": 2567.18,
+    "text": "All I know is how to schedule an operation on top of it."
+  },
+  {
+    "start": 2567.18,
+    "end": 2574.18,
+    "text": "And maybe that's a good programming language, programming model to kind of talk about quantum computers with the TBD."
+  },
+  {
+    "start": 2574.18,
+    "end": 2579.18,
+    "text": "But the idea is that it's an accelerator, much like WMMA course,"
+  },
+  {
+    "start": 2579.18,
+    "end": 2584.18,
+    "text": "which most programmers don't understand how it properly works."
+  },
+  {
+    "start": 2584.18,
+    "end": 2590.98,
+    "text": "but all I know is within my kernel, I could do a lot of general purpose compute, like load things"
+  },
+  {
+    "start": 2590.98,
+    "end": 2597.54,
+    "text": "from this low memory to fast memory, do some reductions on top of it, use my scalar cores,"
+  },
+  {
+    "start": 2597.54,
+    "end": 2603.62,
+    "text": "use my vector cores, and when it's time to do this really, this one operation that it does really,"
+  },
+  {
+    "start": 2603.62,
+    "end": 2609.14,
+    "text": "really, really, really well called the matrix cores, I will handle it, call the, call the gem,"
+  },
+  {
+    "start": 2609.14,
+    "end": 2612.06,
+    "text": "I will hand it off to the matrix scores."
+  },
+  {
+    "start": 2612.06,
+    "end": 2615.5,
+    "text": "And then all I know is how to put things in,"
+  },
+  {
+    "start": 2615.5,
+    "end": 2619.22,
+    "text": "which is the inputs, and how to what to expect as an output."
+  },
+  {
+    "start": 2619.22,
+    "end": 2621.42,
+    "text": "And I will take that output and couple it together"
+  },
+  {
+    "start": 2621.42,
+    "end": 2624.42,
+    "text": "with other things to make my entire application,"
+  },
+  {
+    "start": 2624.42,
+    "end": 2627.42,
+    "text": "make my entire kernel, like general matrix multiplication"
+  },
+  {
+    "start": 2627.42,
+    "end": 2630.38,
+    "text": "kernel or attention kernel, and take that kernel which"
+  },
+  {
+    "start": 2630.38,
+    "end": 2635.66,
+    "text": "comp A and comp B and put that into an AI workload that"
+  },
+  {
+    "start": 2635.66,
+    "end": 2637.42,
+    "text": "knows how to stitch them together"
+  },
+  {
+    "start": 2637.42,
+    "end": 2641.62,
+    "text": "and do basically build an LLM out of that."
+  },
+  {
+    "start": 2641.62,
+    "end": 2645.3,
+    "text": "That's the hard flow of how things work on this base."
+  },
+  {
+    "start": 2645.3,
+    "end": 2650.3,
+    "text": "And by the way, once you have built that LLM model,"
+  },
+  {
+    "start": 2650.58,
+    "end": 2655.18,
+    "text": "that is mostly most of the main work happens on the GPU,"
+  },
+  {
+    "start": 2655.18,
+    "end": 2659.22,
+    "text": "you still have CPU threads orchestrating"
+  },
+  {
+    "start": 2659.22,
+    "end": 2662.26,
+    "text": "when like input streams from your keyboard"
+  },
+  {
+    "start": 2662.26,
+    "end": 2665.32,
+    "text": "goes into a cursor window or a cloud window,"
+  },
+  {
+    "start": 2665.32,
+    "end": 2669.24,
+    "text": "and what that text turns into after pre-processing"
+  },
+  {
+    "start": 2669.24,
+    "end": 2672.44,
+    "text": "into some sort of tokens, and how those tokens feed"
+  },
+  {
+    "start": 2672.44,
+    "end": 2675.96,
+    "text": "into the actual kernel, and how to read the algorithm"
+  },
+  {
+    "start": 2675.96,
+    "end": 2676.68,
+    "text": "of the tokens."
+  },
+  {
+    "start": 2676.68,
+    "end": 2680.12,
+    "text": "So much of that part happens on the CPU side."
+  },
+  {
+    "start": 2680.12,
+    "end": 2684.6,
+    "text": "The tool calls the text to voice or voice to text"
+  },
+  {
+    "start": 2684.6,
+    "end": 2687.92,
+    "text": "or many of the other things that we use,"
+  },
+  {
+    "start": 2687.92,
+    "end": 2693.88,
+    "text": "and the LLM parts happens inside the GPU itself."
+  },
+  {
+    "start": 2693.88,
+    "end": 2696.8,
+    "text": "Inside the GPU, the matrix part happens on the matrix form."
+  },
+  {
+    "start": 2696.8,
+    "end": 2700.04,
+    "text": "So it's like a very, I don't know, special."
+  },
+  {
+    "start": 2700.0,
+    "end": 2706.86,
+    "text": "task for specialized things. Very heterogeneous as much as we try not to"
+  },
+  {
+    "start": 2706.86,
+    "end": 2714.82,
+    "text": "make it look like heterogeneous. I don't know if that clarified things or"
+  },
+  {
+    "start": 2714.82,
+    "end": 2716.82,
+    "text": "I haven't made it worse, but..."
+  },
+  {
+    "start": 2726.02,
+    "end": 2728.02,
+    "text": "Oh yeah, this is awesome, yeah."
+  },
+  {
+    "start": 2744.82,
+    "end": 2758.46,
+    "text": "Yeah, I think that that is an important question though."
+  },
+  {
+    "start": 2758.46,
+    "end": 2768.66,
+    "text": "So from my perspective right now, what's happening is QPU is like a specialized accelerator in"
+  },
+  {
+    "start": 2768.66,
+    "end": 2771.54,
+    "text": "in some sense right now."
+  },
+  {
+    "start": 2771.54,
+    "end": 2776.62,
+    "text": "The vendor owns the runtime and a good bit of the stack."
+  },
+  {
+    "start": 2776.62,
+    "end": 2779.86,
+    "text": "And most of it is not visible, right?"
+  },
+  {
+    "start": 2779.86,
+    "end": 2781.7,
+    "text": "Like most of it is just handled."
+  },
+  {
+    "start": 2781.7,
+    "end": 2785.9,
+    "text": "And some of that is because of the underlying inherent"
+  },
+  {
+    "start": 2785.9,
+    "end": 2787.94,
+    "text": "requirements of the hardware itself."
+  },
+  {
+    "start": 2787.94,
+    "end": 2789.82,
+    "text": "Like there are certain latency requirements."
+  },
+  {
+    "start": 2789.82,
+    "end": 2794.18,
+    "text": "There are certain things checkboxes need to be checked."
+  },
+  {
+    "start": 2794.18,
+    "end": 2798.94,
+    "text": "From the user's perspective, you send things in"
+  },
+  {
+    "start": 2798.94,
+    "end": 2800.78,
+    "text": "and you get an output out."
+  },
+  {
+    "start": 2800.78,
+    "end": 2803.7,
+    "text": "And that output, we might know how to process"
+  },
+  {
+    "start": 2803.7,
+    "end": 2805.14,
+    "text": "or understand that output."
+  },
+  {
+    "start": 2805.14,
+    "end": 2807.78,
+    "text": "And we might know how to what to send in."
+  },
+  {
+    "start": 2807.78,
+    "end": 2811.86,
+    "text": "That's the perspective we have or I have"
+  },
+  {
+    "start": 2811.86,
+    "end": 2815.58,
+    "text": "of how we are exposing some of the staff."
+  },
+  {
+    "start": 2815.58,
+    "end": 2818.66,
+    "text": "And there might be some tools built on top of it,"
+  },
+  {
+    "start": 2818.66,
+    "end": 2821.82,
+    "text": "something like his gate or vendor specific tools"
+  },
+  {
+    "start": 2821.82,
+    "end": 2826.02,
+    "text": "that allow you to have different types of operations here,"
+  },
+  {
+    "start": 2826.02,
+    "end": 2829.3,
+    "text": "like WMMA, which is the matrix course,"
+  },
+  {
+    "start": 2829.3,
+    "end": 2831.06,
+    "text": "but like something akin to that,"
+  },
+  {
+    "start": 2831.06,
+    "end": 2832.62,
+    "text": "but maybe a handful of them,"
+  },
+  {
+    "start": 2832.62,
+    "end": 2836.14,
+    "text": "or maybe like a good bit of them, right?"
+  },
+  {
+    "start": 2836.14,
+    "end": 2838.58,
+    "text": "And that's all vendor provided."
+  },
+  {
+    "start": 2838.58,
+    "end": 2841.92,
+    "text": "Here are our recipes for things you might want to use"
+  },
+  {
+    "start": 2843.1,
+    "end": 2847.02,
+    "text": "the qubits for, or like how you might want"
+  },
+  {
+    "start": 2847.02,
+    "end": 2848.78,
+    "text": "to manipulate certain things."
+  },
+  {
+    "start": 2848.78,
+    "end": 2850.94,
+    "text": "And it's your job to orchestrate them"
+  },
+  {
+    "start": 2850.94,
+    "end": 2854.96,
+    "text": "in certain order to construct something meaningful."
+  },
+  {
+    "start": 2854.96,
+    "end": 2860.4,
+    "text": "And then on this sideline lives like a GPU, a CPU,"
+  },
+  {
+    "start": 2860.4,
+    "end": 2864.36,
+    "text": "an FPGA might be closer, and then some links that transfer"
+  },
+  {
+    "start": 2864.36,
+    "end": 2866.32,
+    "text": "things back and forth, because you might still"
+  },
+  {
+    "start": 2866.32,
+    "end": 2868.56,
+    "text": "want to build a large application that"
+  },
+  {
+    "start": 2868.56,
+    "end": 2870.44,
+    "text": "has all of these components."
+  },
+  {
+    "start": 2880.94,
+    "end": 2881.78,
+    "text": "Yeah."
+  },
+  {
+    "start": 2895.38,
+    "end": 2898.82,
+    "text": "Yeah, that's just, either or is fine."
+  },
+  {
+    "start": 2898.82,
+    "end": 2903.82,
+    "text": "Like some abstraction that hides the underlying complexity of,"
+  },
+  {
+    "start": 2905.02,
+    "end": 2906.34,
+    "text": "yes, yeah."
+  },
+  {
+    "start": 2906.34,
+    "end": 2913.34,
+    "text": "Yes."
+  },
+  {
+    "start": 2913.34,
+    "end": 2920.14,
+    "text": "I mean, I really see levels here."
+  },
+  {
+    "start": 2920.14,
+    "end": 2928.02,
+    "text": "So there is the physical control, the pulses and so, and that is probably out of scope for"
+  },
+  {
+    "start": 2928.02,
+    "end": 2931.62,
+    "text": "what we are talking about, but I'm not sure."
+  },
+  {
+    "start": 2931.62,
+    "end": 2942.88,
+    "text": "But that is something really very close to the hardware with very precise timing requirements."
+  },
+  {
+    "start": 2942.88,
+    "end": 2948.3,
+    "text": "And accuracy really depends on having exact anchor timings."
+  },
+  {
+    "start": 2948.3,
+    "end": 2958.52,
+    "text": "Then there is probably this sort of level that is still very close to the QPUs, but"
+  },
+  {
+    "start": 2958.52,
+    "end": 2965.96,
+    "text": "builds on top of that in a sense, where you would implement surface codes and things like that."
+  },
+  {
+    "start": 2967.16,
+    "end": 2975.96,
+    "text": "So error correcting codes. And that is also what probably live there on what way you've drawn this"
+  },
+  {
+    "start": 2975.96,
+    "end": 2986.2,
+    "text": "FPGA thing. So where you really need very low latencies and have real-time requirements."
+  },
+  {
+    "start": 2986.2,
+    "end": 3000.2,
+    "text": "And then you have your application codes that sort of uses these effective blocks of hard..."
+  },
+  {
+    "start": 3000.0,
+    "end": 3006.56,
+    "text": "where and their control and that is what sits probably on the left side of your picture there."
+  },
+  {
+    "start": 3006.56,
+    "end": 3014.0,
+    "text": "Yeah, yeah, I agree. I think there are levels. Also, I would stress that so the real-time"
+  },
+  {
+    "start": 3014.0,
+    "end": 3021.36,
+    "text": "requirements that you mentioned, Marcus, something similar also exists on the GPU side, but not"
+  },
+  {
+    "start": 3021.36,
+    "end": 3028.88,
+    "text": "from the physics point of view, but how operations, when operations are expected to arrive. A compiler"
+  },
+  {
+    "start": 3028.88,
+    "end": 3033.76,
+    "text": "handles a good benefit, but handles it often in a very inefficient way. And what I mean by that is"
+  },
+  {
+    "start": 3034.48,
+    "end": 3042.08,
+    "text": "in a GPU, when you issue a memory instruction to the, like maybe a load from the, from like a"
+  },
+  {
+    "start": 3042.08,
+    "end": 3049.68,
+    "text": "HBM of a data that I want to process, there needs to be a memory model that explains when this load"
+  },
+  {
+    "start": 3049.68,
+    "end": 3057.44,
+    "text": "is expected. And that allows me to make sure that when I touch the registers that now have this data"
+  },
+  {
+    "start": 3057.44,
+    "end": 3063.52,
+    "text": "actually have the right set of data because if there isn't a like some weight counts or some"
+  },
+  {
+    "start": 3063.52,
+    "end": 3070.0,
+    "text": "memory model or some way to ensure that my data has arrived some synchronization mechanism,"
+  },
+  {
+    "start": 3070.56,
+    "end": 3076.56,
+    "text": "then I could just I will be getting garbage out from the other side because I could be reading"
+  },
+  {
+    "start": 3076.56,
+    "end": 3082.08,
+    "text": "garbage in one run, I could be reading real data in another run like I have no idea. So we have"
+  },
+  {
+    "start": 3082.08,
+    "end": 3087.04,
+    "text": "notions of memory models to ensure that that happens and that's not just GPUs like"
+  },
+  {
+    "start": 3087.44,
+    "end": 3094.44,
+    "text": "CPU's x86 has its own requirements of similar sort of thing."
+  },
+  {
+    "start": 3094.44,
+    "end": 3100.4,
+    "text": "I mean, again, even if we write a where to write assembly"
+  },
+  {
+    "start": 3100.4,
+    "end": 3107.44,
+    "text": "on an x86, there's all this sort of internal interpretation"
+  },
+  {
+    "start": 3107.44,
+    "end": 3113.24,
+    "text": "compilation to micro-instruction that happens,"
+  },
+  {
+    "start": 3113.24,
+    "end": 3118.24,
+    "text": "that deal with all these timing and hardware."
+  },
+  {
+    "start": 3122.16,
+    "end": 3123.0,
+    "text": "That's precisely."
+  },
+  {
+    "start": 3123.0,
+    "end": 3124.4,
+    "text": "Yes."
+  },
+  {
+    "start": 3124.4,
+    "end": 3129.24,
+    "text": "And what I'm stressing is that they're not very different."
+  },
+  {
+    "start": 3129.24,
+    "end": 3131.76,
+    "text": "Like if you look at it from that view,"
+  },
+  {
+    "start": 3131.76,
+    "end": 3133.44,
+    "text": "we still have those timing requirements"
+  },
+  {
+    "start": 3133.44,
+    "end": 3135.8,
+    "text": "of when certain instructions are going to issue,"
+  },
+  {
+    "start": 3135.8,
+    "end": 3138.48,
+    "text": "when certain data is going to arrive."
+  },
+  {
+    "start": 3138.48,
+    "end": 3140.64,
+    "text": "So there could be a view,"
+  },
+  {
+    "start": 3140.64,
+    "end": 3144.6,
+    "text": "But most people never care about it."
+  },
+  {
+    "start": 3144.6,
+    "end": 3147.84,
+    "text": "When they write a C++ code, they're not thinking of,"
+  },
+  {
+    "start": 3147.84,
+    "end": 3151.82,
+    "text": "hey, I need to worry about the timing in which"
+  },
+  {
+    "start": 3151.82,
+    "end": 3153.6,
+    "text": "my instructions are going to be scheduled,"
+  },
+  {
+    "start": 3153.6,
+    "end": 3155.44,
+    "text": "or this data is not going to be there,"
+  },
+  {
+    "start": 3155.44,
+    "end": 3159.36,
+    "text": "or some sort of that really, really, really low-level"
+  },
+  {
+    "start": 3159.36,
+    "end": 3161.04,
+    "text": "timing requirements."
+  },
+  {
+    "start": 3161.04,
+    "end": 3163.44,
+    "text": "The assumption is the hardware vendor"
+  },
+  {
+    "start": 3163.44,
+    "end": 3169.08,
+    "text": "has taken care of that for you, bar, like, buns, and whatnot."
+  },
+  {
+    "start": 3169.08,
+    "end": 3172.88,
+    "text": "But most of that is taking care of that for you."
+  },
+  {
+    "start": 3172.88,
+    "end": 3176.12,
+    "text": "And the same assumption is true for QPUs as well."
+  },
+  {
+    "start": 3176.12,
+    "end": 3178.8,
+    "text": "Much of that is taken care of by the vendor."
+  },
+  {
+    "start": 3178.8,
+    "end": 3182.04,
+    "text": "And it's a question of what is an abstraction"
+  },
+  {
+    "start": 3182.04,
+    "end": 3186.32,
+    "text": "that they can expose, which then therefore,"
+  },
+  {
+    "start": 3186.32,
+    "end": 3189.7200000000003,
+    "text": "the compiler can target, or the runtime can target,"
+  },
+  {
+    "start": 3189.7200000000003,
+    "end": 3191.68,
+    "text": "and everything else can target."
+  },
+  {
+    "start": 3191.68,
+    "end": 3195.32,
+    "text": "And that's kind of where I would like to sit with the stuff"
+  },
+  {
+    "start": 3195.32,
+    "end": 3196.32,
+    "text": "I'm doing."
+  },
+  {
+    "start": 3199.08,
+    "end": 3217.44,
+    "text": "So, in the CPU GPU world, in the classical world, I have control over exactly where I'm"
+  },
+  {
+    "start": 3217.44,
+    "end": 3222.24,
+    "text": "going to place my computation, when I'm going to place it, how I'm going to place it, and"
+  },
+  {
+    "start": 3222.24,
+    "end": 3224.28,
+    "text": "to which device I'm going to place it."
+  },
+  {
+    "start": 3224.28,
+    "end": 3226.76,
+    "text": "Like I have all of that control."
+  },
+  {
+    "start": 3226.76,
+    "end": 3230.76,
+    "text": "The same is not true for TPU right now."
+  },
+  {
+    "start": 3230.76,
+    "end": 3231.76,
+    "text": "On the key."
+  },
+  {
+    "start": 3256.76,
+    "end": 3271.24,
+    "text": "Yeah, sorry, maybe, yeah, maybe I should say it's not at the same granularity."
+  },
+  {
+    "start": 3271.24,
+    "end": 3274.2799999999997,
+    "text": "It is the same in terms of targeting the device itself."
+  },
+  {
+    "start": 3274.2799999999997,
+    "end": 3280.48,
+    "text": "Like, yes, I am deciding I'm going to launch this work onto the QPU using vendor specific,"
+  },
+  {
+    "start": 3280.48,
+    "end": 3286.28,
+    "text": "vendor specific APIs, but it's not at a fine grain granularity."
+  },
+  {
+    "start": 3286.28,
+    "end": 3288.76,
+    "text": "And maybe that's because the hardware itself"
+  },
+  {
+    "start": 3288.76,
+    "end": 3291.84,
+    "text": "doesn't allow you to be at a fine grain granularity."
+  },
+  {
+    "start": 3291.84,
+    "end": 3295.84,
+    "text": "And a great example of that, it would be if I take the WMMA"
+  },
+  {
+    "start": 3295.84,
+    "end": 3299.8,
+    "text": "instruction, it expects the registers to be laid out"
+  },
+  {
+    "start": 3299.8,
+    "end": 3300.8,
+    "text": "You know."
+  },
+  {
+    "start": 3300.0,
+    "end": 3305.52,
+    "text": "specific way. I don't have a control over, hey, today I'm going to lay it out differently."
+  },
+  {
+    "start": 3305.52,
+    "end": 3311.36,
+    "text": "That's just not a thing because the WMMA instruction is a spatial kind of architecture"
+  },
+  {
+    "start": 3311.36,
+    "end": 3316.32,
+    "text": "that expects the inputs in a certain way and expects the output in a certain way. That's"
+  },
+  {
+    "start": 3316.32,
+    "end": 3324.08,
+    "text": "just the how the hardware is designed. I can't say, I'm going to instead of placing my A"
+  },
+  {
+    "start": 3324.08,
+    "end": 3328.08,
+    "text": "in a nice contiguous manner, I'm going to place half of A here and half of A here and"
+  },
+  {
+    "start": 3328.08,
+    "end": 3330.2,
+    "text": "expect correct answers on the other end."
+  },
+  {
+    "start": 3330.2,
+    "end": 3334.24,
+    "text": "And even though I have control to do that because it's just"
+  },
+  {
+    "start": 3334.24,
+    "end": 3338.32,
+    "text": "registers that I'm writing to, I might not even have that"
+  },
+  {
+    "start": 3338.32,
+    "end": 3341.24,
+    "text": "control on the key view, so I'd let alone get the correct"
+  },
+  {
+    "start": 3341.24,
+    "end": 3341.92,
+    "text": "result out."
+  },
+  {
+    "start": 3348.52,
+    "end": 3348.86,
+    "text": "Yeah."
+  },
+  {
+    "start": 3358.08,
+    "end": 3359.08,
+    "text": "Okay, cool."
+  },
+  {
+    "start": 3368.08,
+    "end": 3369.08,
+    "text": "Yeah."
+  },
+  {
+    "start": 3369.08,
+    "end": 3379.08,
+    "text": "Could, could, I think it would be really useful for, for me to understand what that topology looks like and how, what APIs allow that to be exposed."
+  },
+  {
+    "start": 3379.08,
+    "end": 3386.08,
+    "text": "Or just as an example, we could pick any one specific implementation."
+  },
+  {
+    "start": 3439.08,
+    "end": 3462.08,
+    "text": "I'm best specific."
+  },
+  {
+    "start": 3492.08,
+    "end": 3521.8,
+    "text": "That's really cool."
+  },
+  {
+    "start": 3521.8,
+    "end": 3526.46,
+    "text": "This is exactly what is missing from my..."
+  },
+  {
+    "start": 3526.46,
+    "end": 3528.06,
+    "text": "...twides."
+  },
+  {
+    "start": 3528.06,
+    "end": 3533.32,
+    "text": "I'd love to think about a way to..."
+  },
+  {
+    "start": 3533.32,
+    "end": 3534.72,
+    "text": "Even if it's..."
+  },
+  {
+    "start": 3534.72,
+    "end": 3540.84,
+    "text": "To me, what Marcus just mentioned on a specific day, it sounds like some level of dynamic"
+  },
+  {
+    "start": 3540.84,
+    "end": 3549.4,
+    "text": "behavior in the topology itself or in the representation itself, which is okay."
+  },
+  {
+    "start": 3549.4,
+    "end": 3554.0,
+    "text": "You could still build a very nice logical abstraction on top of it that you targeted,"
+  },
+  {
+    "start": 3554.0,
+    "end": 3555.0,
+    "text": "right?"
+  },
+  {
+    "start": 3555.0,
+    "end": 3557.8,
+    "text": "But that's exactly what I'm describing with MMA's."
+  },
+  {
+    "start": 3579.4,
+    "end": 3599.64,
+    "text": "So, right now are they targeting the physical..."
+  },
+  {
+    "start": 3600.0,
+    "end": 3601.0,
+    "text": "Cubits."
+  },
+  {
+    "start": 3630.0,
+    "end": 3648.88,
+    "text": "Yeah, to me it sounds like at least right now because of the nature of how this structure"
+  },
+  {
+    "start": 3648.88,
+    "end": 3653.72,
+    "text": "is structured, they're doing both the runtime component of it."
+  },
+  {
+    "start": 3653.72,
+    "end": 3658.16,
+    "text": "Or maybe they're doing the compilation and like how does the work then gets launched"
+  },
+  {
+    "start": 3658.16,
+    "end": 3665.16,
+    "text": "onto these, they're probably doing that part as well. There's less of a separation there."
+  },
+  {
+    "start": 3665.16,
+    "end": 3669.16,
+    "text": "That's what it sounds like to me."
+  },
+  {
+    "start": 3669.16,
+    "end": 3676.16,
+    "text": "Yeah."
+  },
+  {
+    "start": 3676.16,
+    "end": 3687.16,
+    "text": "Yeah, so we have a component. Yeah, so we have a component called target that lets you specify"
+  },
+  {
+    "start": 3687.16,
+    "end": 3693.76,
+    "text": "specify which underlying compiler you want to use for a specific implementation or"
+  },
+  {
+    "start": 3693.76,
+    "end": 3697.7,
+    "text": "like a specific piece of it. So maybe think of like one of the config copies."
+  },
+  {
+    "start": 3697.7,
+    "end": 3703.04,
+    "text": "And then once that's compiled you then launch it on that specific target that"
+  },
+  {
+    "start": 3703.04,
+    "end": 3710.42,
+    "text": "you compiled for using a specific compiler. So it sits underneath the"
+  },
+  {
+    "start": 3710.42,
+    "end": 3715.42,
+    "text": "the combinations well not not not necessarily saying that is"
+  },
+  {
+    "start": 3716.92,
+    "end": 3720.16,
+    "text": "They could be that is like the only solution, but that is"
+  },
+  {
+    "start": 3721.28,
+    "end": 3723.28,
+    "text": "What we are looking at"
+  },
+  {
+    "start": 3723.84,
+    "end": 3725.84,
+    "text": "Sorry, there's a question back"
+  },
+  {
+    "start": 3728.12,
+    "end": 3734.24,
+    "text": "I think there's just coming back to what I said earlier is just exactly the point I was phrasing"
+  },
+  {
+    "start": 3734.24,
+    "end": 3743.0,
+    "text": "where this difference is I think, because again, I think once we have compiled and launched"
+  },
+  {
+    "start": 3743.0,
+    "end": 3749.0,
+    "text": "in your terms the circuit or the instructions we're going to run, this usually ends up in"
+  },
+  {
+    "start": 3749.0,
+    "end": 3755.44,
+    "text": "the closed part of the quantum vendor at the moment, because for most of them this is basically"
+  },
+  {
+    "start": 3755.44,
+    "end": 3761.4,
+    "text": "the secret ingredient of how they will implement their gates, sample even to what you do a generic"
+  },
+  {
+    "start": 3761.4,
+    "end": 3766.72,
+    "text": "type of compilation and then after this is submitted they will even do a second"
+  },
+  {
+    "start": 3766.72,
+    "end": 3771.12,
+    "text": "phase where they compile to something that matches their hardware instructions"
+  },
+  {
+    "start": 3771.12,
+    "end": 3778.32,
+    "text": "and I'm not really sure if we can in check in between compiling and then"
+  },
+  {
+    "start": 3778.32,
+    "end": 3787.96,
+    "text": "running stuff. That makes sense I would like to so I don't have an answer for"
+  },
+  {
+    "start": 3787.96,
+    "end": 3796.96,
+    "text": "this right now or I'd love to explore this what this looks like and if there is a way"
+  },
+  {
+    "start": 3796.96,
+    "end": 3803.08,
+    "text": "to inject something in between that calls like a proprietary thing in the back end I'm"
+  },
+  {
+    "start": 3803.08,
+    "end": 3806.84,
+    "text": "not sure what that looks like John Eel said a question."
+  },
+  {
+    "start": 3806.84,
+    "end": 3811.16,
+    "text": "I do know it's hard for me to comment on too much because it's not really my own activities"
+  },
+  {
+    "start": 3811.16,
+    "end": 3815.04,
+    "text": "and like what we're doing and continuing with this stuff but obviously for our runtime we"
+  },
+  {
+    "start": 3815.04,
+    "end": 3818.28,
+    "text": "We do need to call to classical hardware, and I'm not entirely sure how they do it."
+  },
+  {
+    "start": 3818.28,
+    "end": 3823.0,
+    "text": "I wish I had brought someone along who had a better opinion."
+  },
+  {
+    "start": 3823.0,
+    "end": 3827.92,
+    "text": "My understanding, I guess, is that we compiled down to something like LLBN, and there are"
+  },
+  {
+    "start": 3827.92,
+    "end": 3832.88,
+    "text": "tools to do the synchronization between the quantum kernel and some classical computation"
+  },
+  {
+    "start": 3832.88,
+    "end": 3834.28,
+    "text": "attending at the same time."
+  },
+  {
+    "start": 3834.28,
+    "end": 3840.04,
+    "text": "But that seems like it maps in a bit closer to what you're talking about with having some"
+  },
+  {
+    "start": 3840.04,
+    "end": 3843.04,
+    "text": "classical run time to then walk into the quantum kernel."
+  },
+  {
+    "start": 3845.04,
+    "end": 3846.64,
+    "text": "So I can kind of see how it would work,"
+  },
+  {
+    "start": 3846.64,
+    "end": 3847.68,
+    "text": "but yeah, it's not something that loads"
+  },
+  {
+    "start": 3847.68,
+    "end": 3849.84,
+    "text": "that does do as far as I'm all that."
+  },
+  {
+    "start": 3849.84,
+    "end": 3852.96,
+    "text": "Yeah, yeah, what I'm also thinking is like"
+  },
+  {
+    "start": 3852.96,
+    "end": 3855.72,
+    "text": "if you are going to construct more complex systems"
+  },
+  {
+    "start": 3855.72,
+    "end": 3859.12,
+    "text": "where you have other devices there,"
+  },
+  {
+    "start": 3860.2799999999997,
+    "end": 3861.92,
+    "text": "with the closer, the closer it's going,"
+  },
+  {
+    "start": 3861.92,
+    "end": 3863.8,
+    "text": "one can still very much exist,"
+  },
+  {
+    "start": 3863.8,
+    "end": 3866.64,
+    "text": "that is the secret recipe,"
+  },
+  {
+    "start": 3866.64,
+    "end": 3868.56,
+    "text": "but there still needs to be a contract"
+  },
+  {
+    "start": 3868.56,
+    "end": 3870.88,
+    "text": "between that and everything else in the system"
+  },
+  {
+    "start": 3870.88,
+    "end": 3874.24,
+    "text": "that the company or vendor doesn't own."
+  },
+  {
+    "start": 3874.24,
+    "end": 3875.64,
+    "text": "What does that contract look like?"
+  },
+  {
+    "start": 3875.64,
+    "end": 3877.7200000000003,
+    "text": "It's not very clear to me."
+  },
+  {
+    "start": 3877.7200000000003,
+    "end": 3879.16,
+    "text": "Yeah, so I guess in our case,"
+  },
+  {
+    "start": 3879.16,
+    "end": 3880.64,
+    "text": "we only have like the hugger representation"
+  },
+  {
+    "start": 3880.64,
+    "end": 3881.6,
+    "text": "of the open source."
+  },
+  {
+    "start": 3881.6,
+    "end": 3883.16,
+    "text": "Presumably you could have a compiler"
+  },
+  {
+    "start": 3883.16,
+    "end": 3884.68,
+    "text": "that took the hugger representation,"
+  },
+  {
+    "start": 3884.68,
+    "end": 3888.24,
+    "text": "compiled it to something LOBM-like"
+  },
+  {
+    "start": 3888.24,
+    "end": 3890.08,
+    "text": "that had the tools to the space RT"
+  },
+  {
+    "start": 3890.08,
+    "end": 3891.96,
+    "text": "instead of using our runtime, for example."
+  },
+  {
+    "start": 3893.36,
+    "end": 3896.68,
+    "text": "So you would need some compiler that compiled"
+  },
+  {
+    "start": 3896.68,
+    "end": 3898.0,
+    "text": "the high level representation of something"
+  },
+  {
+    "start": 3898.0,
+    "end": 3900.4,
+    "text": "that then made this lot of the tools to be about."
+  },
+  {
+    "start": 3900.0,
+    "end": 3904.56,
+    "text": "what about that? Is that the right understanding? Yeah, that is the right understanding of what"
+  },
+  {
+    "start": 3904.56,
+    "end": 3911.92,
+    "text": "I have been thinking about at least. But it's a fair point that there might be certain vendor"
+  },
+  {
+    "start": 3911.92,
+    "end": 3919.04,
+    "text": "specific close source things that do make it really hard to do some of that and you might just"
+  },
+  {
+    "start": 3919.04,
+    "end": 3925.04,
+    "text": "be living at a point that is just high level API has been called for the quantum piece and maybe"
+  },
+  {
+    "start": 3925.04,
+    "end": 3930.8,
+    "text": "everything else can use something like a heterogeneous runtime. I'm still that's"
+  },
+  {
+    "start": 3930.8,
+    "end": 3934.94,
+    "text": "that part I'm not sure about and maybe that's something I have to like do a"
+  },
+  {
+    "start": 3934.94,
+    "end": 3938.36,
+    "text": "bit more research in. Yeah I mean I guess I wonder if you'd have an easier"
+  },
+  {
+    "start": 3938.36,
+    "end": 3942.44,
+    "text": "server if you were putting this on the control system to keep you to start with."
+  },
+  {
+    "start": 3942.44,
+    "end": 3946.12,
+    "text": "You're quite ambitious at the moment with like wanting to integrate the"
+  },
+  {
+    "start": 3946.12,
+    "end": 3950.72,
+    "text": "HPE resources and then I'll set like the FPGAs and GPUs as well. Obviously we"
+  },
+  {
+    "start": 3950.72,
+    "end": 3954.72,
+    "text": "you have a machine with GPUs attached and they keep you attached."
+  },
+  {
+    "start": 3954.72,
+    "end": 3956.24,
+    "text": "And we have a runtime that's on it."
+  },
+  {
+    "start": 3956.24,
+    "end": 3957.76,
+    "text": "You could do the same thing here."
+  },
+  {
+    "start": 3957.76,
+    "end": 3958.26,
+    "text": "Yeah."
+  },
+  {
+    "start": 4010.72,
+    "end": 4025.72,
+    "text": "Yeah, John, do you have a comment?"
+  },
+  {
+    "start": 4025.72,
+    "end": 4030.72,
+    "text": "Yeah, I guess that's just to me that sounds like a slightly different use case."
+  },
+  {
+    "start": 4030.72,
+    "end": 4032.72,
+    "text": "I think they're both useful."
+  },
+  {
+    "start": 4032.72,
+    "end": 4036.72,
+    "text": "And like what I'm describing there is kind of something to what we're working on and why"
+  },
+  {
+    "start": 4036.72,
+    "end": 4039.84,
+    "text": "Yeah, and they both fit together."
+  },
+  {
+    "start": 4039.84,
+    "end": 4041.0,
+    "text": "They're kind of part of it."
+  },
+  {
+    "start": 4041.0,
+    "end": 4043.44,
+    "text": "Maybe you could imagine a world where all these things have"
+  },
+  {
+    "start": 4043.44,
+    "end": 4046.52,
+    "text": "like some unified program or even going to do stuff"
+  },
+  {
+    "start": 4046.52,
+    "end": 4048.0,
+    "text": "close to the device where necessary."
+  },
+  {
+    "start": 4048.0,
+    "end": 4052.32,
+    "text": "But yeah, I think both of those things"
+  },
+  {
+    "start": 4052.32,
+    "end": 4054.16,
+    "text": "are useful use cases to some degree."
+  },
+  {
+    "start": 4056.2,
+    "end": 4058.64,
+    "text": "Yeah, I kind of, sorry, good."
+  },
+  {
+    "start": 4060.12,
+    "end": 4062.16,
+    "text": "Oh, I kind of agree with that as well."
+  },
+  {
+    "start": 4062.16,
+    "end": 4066.52,
+    "text": "So for me, it's different use cases,"
+  },
+  {
+    "start": 4066.52,
+    "end": 4075.36,
+    "text": "but also that is an easier problem to solve because you do"
+  },
+  {
+    "start": 4075.36,
+    "end": 4080.88,
+    "text": "essentially just say, hey, let the QPU stack do everything"
+  },
+  {
+    "start": 4080.88,
+    "end": 4082.12,
+    "text": "on its own."
+  },
+  {
+    "start": 4082.12,
+    "end": 4085.44,
+    "text": "All I'm going to do is potentially just submit stuff to it."
+  },
+  {
+    "start": 4085.44,
+    "end": 4088.32,
+    "text": "That's the only part that you're doing at that point."
+  },
+  {
+    "start": 4088.32,
+    "end": 4090.96,
+    "text": "And that's not necessarily a device I'd run time."
+  },
+  {
+    "start": 4090.96,
+    "end": 4095.5,
+    "text": "that's just our runtime that couples things together"
+  },
+  {
+    "start": 4095.5,
+    "end": 4098.64,
+    "text": "and might have more control over parts of it"
+  },
+  {
+    "start": 4098.64,
+    "end": 4101.88,
+    "text": "and might have less control over the some parts of it."
+  },
+  {
+    "start": 4102.9,
+    "end": 4105.9,
+    "text": "To me, that's not really a definition"
+  },
+  {
+    "start": 4105.9,
+    "end": 4107.74,
+    "text": "of what our device-side runtime looks like"
+  },
+  {
+    "start": 4107.74,
+    "end": 4110.12,
+    "text": "and it wouldn't account for very different"
+  },
+  {
+    "start": 4110.12,
+    "end": 4114.74,
+    "text": "topological level of optimizations or spatial optimizations"
+  },
+  {
+    "start": 4114.74,
+    "end": 4117.98,
+    "text": "or being able to connect certain pieces together"
+  },
+  {
+    "start": 4117.98,
+    "end": 4121.66,
+    "text": "and optimize for the transfers between the two."
+  },
+  {
+    "start": 4123.58,
+    "end": 4126.18,
+    "text": "But yes, I agree that is a use case still."
+  },
+  {
+    "start": 4129.3,
+    "end": 4133.6,
+    "text": "Or you must also require something like that too at the top."
+  },
+  {
+    "start": 4137.06,
+    "end": 4138.9,
+    "text": "Those are kind of my thoughts on that."
+  },
+  {
+    "start": 4147.98,
+    "end": 4156.18,
+    "text": "Yeah, and it might be useful, at least in this working group, to talk about what do we care"
+  },
+  {
+    "start": 4156.18,
+    "end": 4158.22,
+    "text": "more about defining?"
+  },
+  {
+    "start": 4158.22,
+    "end": 4165.9,
+    "text": "Or if, I mean, we could do both, but some sort of scope that says this is more feasible"
+  },
+  {
+    "start": 4165.9,
+    "end": 4167.78,
+    "text": "or this is more interesting."
+  },
+  {
+    "start": 4167.78,
+    "end": 4173.26,
+    "text": "And there are other is entirely like a vendor-specific story."
+  },
+  {
+    "start": 4173.26,
+    "end": 4180.26,
+    "text": "That is also an argument to be had for the working group."
+  },
+  {
+    "start": 4200.0,
+    "end": 4224.44,
+    "text": "Yeah, I think what we also need to consider is what the other working groups are doing"
+  },
+  {
+    "start": 4224.44,
+    "end": 4227.2,
+    "text": "in these areas."
+  },
+  {
+    "start": 4227.2,
+    "end": 4230.7,
+    "text": "like the the resource management working group, I think, or like this"
+  },
+  {
+    "start": 4230.7,
+    "end": 4238.12,
+    "text": "QLIM IQIS stuff. I think we're very much, I should consider their work as"
+  },
+  {
+    "start": 4238.12,
+    "end": 4241.9,
+    "text": "well, because I think they're trying to come up with like a unified scheme to"
+  },
+  {
+    "start": 4241.9,
+    "end": 4249.36,
+    "text": "access hardware. But if they don't consider the model there, we control a"
+  },
+  {
+    "start": 4249.36,
+    "end": 4254.8,
+    "text": "runtime that is sits below the spawnry, this might get complicated to achieve, I"
+  },
+  {
+    "start": 4254.8,
+    "end": 4263.44,
+    "text": "I think it should keep that in mind at least when we try to do this model of the stuff."
+  },
+  {
+    "start": 4263.44,
+    "end": 4267.16,
+    "text": "I think for the higher level stuff it's a little bit easier because I think the boundaries"
+  },
+  {
+    "start": 4267.16,
+    "end": 4272.36,
+    "text": "are clearer there where stuff ends, at least in my mind, but I think for the longer stuff"
+  },
+  {
+    "start": 4272.36,
+    "end": 4279.36,
+    "text": "should definitely keep other working clips in loop."
+  },
+  {
+    "start": 4302.36,
+    "end": 4318.08,
+    "text": "Yes, it will be using the... yes, yes. So it will sit on top of that because the runtime"
+  },
+  {
+    "start": 4318.08,
+    "end": 4324.92,
+    "text": "requires all of that information and it doesn't expect to build that information itself."
+  },
+  {
+    "start": 4324.92,
+    "end": 4331.24,
+    "text": "Typically what happens is the same sort of levels exist within the GPU runtime as well,"
+  },
+  {
+    "start": 4331.24,
+    "end": 4339.32,
+    "text": "things get built on top of like the KFD driver or something like that that says"
+  },
+  {
+    "start": 4339.32,
+    "end": 4344.8,
+    "text": "there's like KFD driver, rock car, and then HSA like all of these various"
+  },
+  {
+    "start": 4344.8,
+    "end": 4350.8,
+    "text": "things report information about what the resources underlying resources look"
+  },
+  {
+    "start": 4350.8,
+    "end": 4357.32,
+    "text": "like which the runtime says okay now I know what I have how do I schedule work"
+  },
+  {
+    "start": 4357.32,
+    "end": 4363.32,
+    "text": "on top of it or how do a launch work on top of it with different level capabilities,"
+  },
+  {
+    "start": 4363.32,
+    "end": 4370.16,
+    "text": "granted the hardware capabilities to allow you to do whatever."
+  },
+  {
+    "start": 4370.16,
+    "end": 4372.62,
+    "text": "And that same is true for CUDA runtime."
+  },
+  {
+    "start": 4372.62,
+    "end": 4378.04,
+    "text": "CUDA runtime sits on top of a layer that the driver reports the resources or some level"
+  },
+  {
+    "start": 4378.04,
+    "end": 4384.72,
+    "text": "of thing reports, the resources of whatever is there, the topology, how it's connected,"
+  },
+  {
+    "start": 4384.72,
+    "end": 4385.44,
+    "text": "and so on."
+  },
+  {
+    "start": 4396.24,
+    "end": 4398.0,
+    "text": "Yeah, I think that's a good question."
+  },
+  {
+    "start": 4398.0,
+    "end": 4403.16,
+    "text": "I was hoping I think the other working groups"
+  },
+  {
+    "start": 4403.16,
+    "end": 4407.48,
+    "text": "were mentioned, it might be useful to have them share"
+  },
+  {
+    "start": 4407.48,
+    "end": 4410.2,
+    "text": "what they're thinking about exposing potentially"
+  },
+  {
+    "start": 4410.2,
+    "end": 4416.08,
+    "text": "as an action item and see what representation comes out"
+  },
+  {
+    "start": 4416.08,
+    "end": 4416.92,
+    "text": "from there."
+  },
+  {
+    "start": 4420.64,
+    "end": 4420.9,
+    "text": "Yeah."
+  },
+  {
+    "start": 4440.2,
+    "end": 4464.1,
+    "text": "I'm not necessarily like depends how so you can you can imagine a scenario where there"
+  },
+  {
+    "start": 4464.1,
+    "end": 4469.88,
+    "text": "is not necessarily contract and you can imagine a scenario where there is what I can do is"
+  },
+  {
+    "start": 4469.88,
+    "end": 4472.48,
+    "text": "I'll create examples of what I mean by this."
+  },
+  {
+    "start": 4472.48,
+    "end": 4475.2,
+    "text": "It's very hard to understand this abstractly,"
+  },
+  {
+    "start": 4475.2,
+    "end": 4477.92,
+    "text": "but for example, on the classical side,"
+  },
+  {
+    "start": 4477.92,
+    "end": 4481.28,
+    "text": "the compiler understands the concept of thread blocks"
+  },
+  {
+    "start": 4481.28,
+    "end": 4483.44,
+    "text": "and grids and whatnot, the work items"
+  },
+  {
+    "start": 4483.44,
+    "end": 4485.2,
+    "text": "and how to allocate shared memory"
+  },
+  {
+    "start": 4485.2,
+    "end": 4488.04,
+    "text": "and how to pass that pointer around."
+  },
+  {
+    "start": 4488.04,
+    "end": 4490.92,
+    "text": "And then the runtime is the one that's doing"
+  },
+  {
+    "start": 4490.92,
+    "end": 4494.0,
+    "text": "the runtime setup for it."
+  },
+  {
+    "start": 4494.0,
+    "end": 4497.88,
+    "text": "Like I'm launching with 1024 grid size"
+  },
+  {
+    "start": 4497.88,
+    "end": 4500.0,
+    "text": "and two minutes."
+  },
+  {
+    "start": 4500.0,
+    "end": 4504.56,
+    "text": "a byte of shared memory and this stream. The stream concept doesn't know anything about,"
+  },
+  {
+    "start": 4504.56,
+    "end": 4508.64,
+    "text": "the compiler doesn't know anything about, because that's just establishing the DAG."
+  },
+  {
+    "start": 4508.64,
+    "end": 4513.92,
+    "text": "Right. But the rest of it, the compiler needs that information in some regards."
+  },
+  {
+    "start": 4515.2,
+    "end": 4521.04,
+    "text": "We can imagine a scenario where it's separated, where that information can entirely be extracted"
+  },
+  {
+    "start": 4521.04,
+    "end": 4529.28,
+    "text": "from hardware interface, and the runtime only handles the stream or concurrency aspect of"
+  },
+  {
+    "start": 4529.28,
+    "end": 4535.2,
+    "text": "or building the DAG and you can imagine a scenario where the runtime influences that"
+  },
+  {
+    "start": 4535.2,
+    "end": 4542.16,
+    "text": "and the compiler uses the runtime instead or uses a logical representation and resolves that"
+  },
+  {
+    "start": 4542.8,
+    "end": 4552.24,
+    "text": "at a later time. Sorry, I might need to like write a little bit of thing for this. This is"
+  },
+  {
+    "start": 4552.24,
+    "end": 4559.24,
+    "text": "This is potentially hard to explain."
+  },
+  {
+    "start": 4573.24,
+    "end": 4576.24,
+    "text": "It understands the allocation of like,"
+  },
+  {
+    "start": 4576.24,
+    "end": 4578.92,
+    "text": "memory in the GPU, hard block."
+  },
+  {
+    "start": 4587.52,
+    "end": 4589.16,
+    "text": "Correct, yeah."
+  },
+  {
+    "start": 4589.16,
+    "end": 4594.92,
+    "text": "But how to carve them out, or how to like,"
+  },
+  {
+    "start": 4594.92,
+    "end": 4598.48,
+    "text": "how to carve them out, or how to launch specific amount of them."
+  },
+  {
+    "start": 4598.48,
+    "end": 4601.2,
+    "text": "But that's just a decision that NVIDIA took."
+  },
+  {
+    "start": 4601.2,
+    "end": 4603.84,
+    "text": "That's not necessarily the only way to design this."
+  },
+  {
+    "start": 4603.84,
+    "end": 4612.84,
+    "text": "you could separate the two concepts, especially if there's always a static way to know these things."
+  },
+  {
+    "start": 4622.24,
+    "end": 4632.04,
+    "text": "Yeah, yeah, yeah, yeah. I can write something out for that specific part."
+  },
+  {
+    "start": 4632.04,
+    "end": 4639.64,
+    "text": "Yeah, it will be clearer if I write out some examples of how things get wrapped."
+  },
+  {
+    "start": 4639.64,
+    "end": 4645.52,
+    "text": "And this is driven from a very Nvidia specific decision of what a runtime allows you to do"
+  },
+  {
+    "start": 4645.52,
+    "end": 4649.08,
+    "text": "both static and dynamic allocations of shared memory."
+  },
+  {
+    "start": 4649.08,
+    "end": 4656.8,
+    "text": "It allows you to do runtime figuring out how much grid size to launch because it's dependent"
+  },
+  {
+    "start": 4656.8,
+    "end": 4662.78,
+    "text": "on the problem shapes and sizes that you're handling, like gem problems influences the"
+  },
+  {
+    "start": 4662.78,
+    "end": 4671.44,
+    "text": "grid size. So I don't know what the relative thing for quantum is. Like I know qubits are"
+  },
+  {
+    "start": 4671.44,
+    "end": 4681.36,
+    "text": "known, but a can a application have larger than physical qubits such that it can express"
+  },
+  {
+    "start": 4681.36,
+    "end": 4687.98,
+    "text": "larger problems than what the hard work is schedule possibly not yeah yeah"
+  },
+  {
+    "start": 4687.98,
+    "end": 4693.86,
+    "text": "that's what I'm saying yeah to the stress nice night yeah yeah so so that's kind"
+  },
+  {
+    "start": 4693.86,
+    "end": 4697.94,
+    "text": "of what I'm saying that that is a very like classical versus quantum difference"
+  },
+  {
+    "start": 4697.94,
+    "end": 4703.58,
+    "text": "that is just not there and we don't have to follow what invidiated for the"
+  },
+  {
+    "start": 4703.58,
+    "end": 4710.68,
+    "text": "classical runtime just because it doesn't make sense here but in in on the classical"
+  },
+  {
+    "start": 4710.68,
+    "end": 4716.08,
+    "text": "side, sorry, on the classical side, it does make sense because you can launch more logical"
+  },
+  {
+    "start": 4716.08,
+    "end": 4722.12,
+    "text": "work than the physical hardware. And that's just just do it in iterative space. You, you"
+  },
+  {
+    "start": 4722.12,
+    "end": 4728.36,
+    "text": "do as much work as you have hardware available in one iteration. And once that's done, you"
+  },
+  {
+    "start": 4728.36,
+    "end": 4733.6,
+    "text": "do the next bit and then that's next next next logical work next logical work. And then"
+  },
+  {
+    "start": 4733.6,
+    "end": 4736.0,
+    "text": "you know, eventually you're done with all of the work."
+  },
+  {
+    "start": 4736.0,
+    "end": 4737.0,
+    "text": "That is not the case."
+  },
+  {
+    "start": 4737.0,
+    "end": 4738.0,
+    "text": "Right."
+  },
+  {
+    "start": 4738.0,
+    "end": 4748.76,
+    "text": "And on the quantum system, you could do this your Hamiltonian is sort of block diagonal"
+  },
+  {
+    "start": 4748.76,
+    "end": 4754.92,
+    "text": "in the form, but that means you essentially have separate quantum problems."
+  },
+  {
+    "start": 4754.92,
+    "end": 4755.92,
+    "text": "Yeah."
+  },
+  {
+    "start": 4755.92,
+    "end": 4756.92,
+    "text": "Yeah."
+  },
+  {
+    "start": 4756.92,
+    "end": 4763.28,
+    "text": "In this case, it's the same kernel representing the logical space, but I don't think that's"
+  },
+  {
+    "start": 4763.28,
+    "end": 4777.28,
+    "text": "to for one. But I mean that is the case where you could run sub problems on separate systems"
+  },
+  {
+    "start": 4777.28,
+    "end": 4786.28,
+    "text": "if they're independently there's no correlation. But that is not a full coupled quantum circuit."
+  },
+  {
+    "start": 4786.28,
+    "end": 4790.04,
+    "text": "Yeah, that makes sense."
+  },
+  {
+    "start": 4800.0,
+    "end": 4821.76,
+    "text": "Yeah. So I do think there are similarities even there too because I'll give you an example"
+  },
+  {
+    "start": 4821.76,
+    "end": 4828.62,
+    "text": "of similarity. There is a notion in classical computing where you have, it's driven through"
+  },
+  {
+    "start": 4828.62,
+    "end": 4836.62,
+    "text": "different justification. So there's a notion in classical computing where you"
+  },
+  {
+    "start": 4836.62,
+    "end": 4842.26,
+    "text": "want to be able to transfer intermediates between compute units. So like let's say"
+  },
+  {
+    "start": 4842.26,
+    "end": 4846.74,
+    "text": "I loaded up a tile and then I want to share my tile to my neighboring compute"
+  },
+  {
+    "start": 4846.74,
+    "end": 4852.42,
+    "text": "unit. But the only way you can share that or you can use that feature is when you"
+  },
+  {
+    "start": 4852.42,
+    "end": 4856.9,
+    "text": "can guarantee concurrency. You can guarantee two work groups resident on"
+  },
+  {
+    "start": 4856.9,
+    "end": 4860.2,
+    "text": "on neighboring compute units at the same time."
+  },
+  {
+    "start": 4860.2,
+    "end": 4863.34,
+    "text": "And if that concurrency guarantee cannot be established,"
+  },
+  {
+    "start": 4863.34,
+    "end": 4866.38,
+    "text": "then you just cannot use that ability."
+  },
+  {
+    "start": 4866.38,
+    "end": 4868.58,
+    "text": "You cannot use that feature."
+  },
+  {
+    "start": 4868.58,
+    "end": 4873.18,
+    "text": "So that means the logical grid size needs to match"
+  },
+  {
+    "start": 4873.18,
+    "end": 4876.8,
+    "text": "the physical compute unit size, number of compute units."
+  },
+  {
+    "start": 4876.8,
+    "end": 4880.74,
+    "text": "Otherwise, the circuit, so to say, like bricks,"
+  },
+  {
+    "start": 4880.74,
+    "end": 4883.36,
+    "text": "like you cannot use that at all,"
+  },
+  {
+    "start": 4883.36,
+    "end": 4885.54,
+    "text": "because the guarantee is not there."
+  },
+  {
+    "start": 4885.54,
+    "end": 4888.54,
+    "text": "I do have to draw for another meeting."
+  },
+  {
+    "start": 4888.54,
+    "end": 4893.54,
+    "text": "I'll catch up with the recording if there is more discussion."
+  },
+  {
+    "start": 4893.54,
+    "end": 4898.54,
+    "text": "I also have to leave."
+  },
+  {
+    "start": 4898.54,
+    "end": 4901.54,
+    "text": "I quickly wanted to mention this."
+  },
+  {
+    "start": 4901.54,
+    "end": 4904.54,
+    "text": "I think we are losing ourselves in detail in discussion."
+  },
+  {
+    "start": 4904.54,
+    "end": 4907.54,
+    "text": "Maybe what should we take away from this?"
+  },
+  {
+    "start": 4907.54,
+    "end": 4912.54,
+    "text": "Because I think we are at a point where we can stop this now."
+  },
+  {
+    "start": 4912.54,
+    "end": 4917.18,
+    "text": "Maybe we should try to like time box our next meeting a bit better"
+  },
+  {
+    "start": 4942.54,
+    "end": 4955.86,
+    "text": "I think that we can take this in both directions. I think for me personally, I think the application"
+  },
+  {
+    "start": 4955.86,
+    "end": 4963.58,
+    "text": "facing one is definitely more than what stuff I'm familiar with, also what I'm working on."
+  },
+  {
+    "start": 4963.58,
+    "end": 4968.9,
+    "text": "But I guess this should not stop us from considering the low level runtime. But again, I have"
+  },
+  {
+    "start": 4968.9,
+    "end": 4974.14,
+    "text": "this fear, this mind, interfere with other working groups and also with what vendors are"
+  },
+  {
+    "start": 4974.14,
+    "end": 4983.06,
+    "text": "doing where we then don't really have the power to intercheck something I guess."
+  },
+  {
+    "start": 4983.06,
+    "end": 5008.58,
+    "text": "I think, so I agree with Philip and I mean also my heart is more on the application interface"
+  },
+  {
+    "start": 5008.58,
+    "end": 5018.98,
+    "text": "But I think it might be beneficial for us to start a document where we sketch out what"
+  },
+  {
+    "start": 5018.98,
+    "end": 5026.98,
+    "text": "are the, what we believe are the requirements at these two interface levels."
+  },
+  {
+    "start": 5026.98,
+    "end": 5037.5,
+    "text": "so that we have some place from where we actually can have a more focused discussion"
+  },
+  {
+    "start": 5037.5,
+    "end": 5040.5,
+    "text": "without losing ourselves in the weeds."
+  },
+  {
+    "start": 5056.98,
+    "end": 5063.98,
+    "text": "Yes, that's essentially the..."
+  },
+  {
+    "start": 5086.98,
+    "end": 5093.98,
+    "text": "Okay."
+  },
+  {
+    "start": 5100.0,
+    "end": 5116.4,
+    "text": "Now, I was just saying could be continued the discussion like a saying like on stack"
+  },
+  {
+    "start": 5116.4,
+    "end": 5127.84,
+    "text": "because there might be things that may be informal for a document and yeah like this."
+  },
+  {
+    "start": 5127.84,
+    "end": 5134.84,
+    "text": "Oh, of course."
+  },
+  {
+    "start": 5134.84,
+    "end": 5142.84,
+    "text": "Anyway, I'm going to talk now."
+  },
+  {
+    "start": 5142.84,
+    "end": 5143.84,
+    "text": "Yeah."
+  },
+  {
+    "start": 5143.84,
+    "end": 5145.84,
+    "text": "I have to."
+  },
+  {
+    "start": 5145.84,
+    "end": 5146.84,
+    "text": "Thank you."
+  },
+  {
+    "start": 5146.84,
+    "end": 5147.84,
+    "text": "Thank you."
+  },
+  {
+    "start": 5147.84,
+    "end": 5148.84,
+    "text": "Okay."
+  },
+  {
+    "start": 5148.84,
+    "end": 5149.84,
+    "text": "Okay."
+  },
+  {
+    "start": 5149.84,
+    "end": 5150.84,
+    "text": "Yeah, bye."
+  }
+]
